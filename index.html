@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise de Produtos · Oakberry PUC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
+:root {
+  --bg:      #080c14;
+  --s1:      #0e1420;
+  --s2:      #141d2e;
+  --s3:      #1a2640;
+  --border:  #1e2d45;
+  --border2: #263753;
+  --accent:  #3b82f6;
+  --green:   #10b981;
+  --red:     #f43f5e;
+  --amber:   #f59e0b;
+  --purple:  #8b5cf6;
+  --cyan:    #06b6d4;
+  --pink:    #ec4899;
+  --txt:     #e2e8f0;
+  --txt2:    #7d95b5;
+  --txt3:    #3d5470;
+  --r:       10px;
+  --sidebar: 230px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex}
+
+/* ═══════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════ */
+.sidebar {
+  width:var(--sidebar);min-height:100vh;background:var(--s1);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:60;
+  transition:transform .3s ease;
+}
+.brand {
+  padding:24px 18px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:11px;
+}
+.brand-mark {
+  width:32px;height:32px;flex-shrink:0;
+  background:linear-gradient(135deg,#10b981,#059669);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;color:#fff;letter-spacing:-.5px;
+}
+.brand-name{font-size:13px;font-weight:700;line-height:1.25;letter-spacing:-.01em}
+.brand-sub{font-size:10px;color:var(--txt3);font-weight:400;margin-top:1px}
+
+.nav{padding:12px 10px;flex:1;overflow-y:auto}
+.nav-sec{font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;padding:0 8px;margin:10px 0 4px}
+.nav-btn {
+  display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border-radius:8px;
+  font-size:12px;font-weight:600;color:var(--txt2);background:none;border:none;
+  cursor:pointer;transition:all .15s;text-align:left;font-family:'Syne',sans-serif;
+  letter-spacing:-.01em;
+}
+.nav-btn:hover{background:var(--s2);color:var(--txt)}
+.nav-btn.active{background:linear-gradient(90deg,#1d4ed820,transparent);color:var(--accent);border-left:2px solid var(--accent);padding-left:8px}
+.nav-btn svg{flex-shrink:0;opacity:.7}
+.nav-btn.active svg{opacity:1}
+
+.sidebar-foot{padding:14px 12px;border-top:1px solid var(--border)}
+.foot-chip{font-size:10px;color:var(--txt3);font-family:'DM Mono',monospace;background:var(--s2);padding:6px 10px;border-radius:6px;text-align:center}
+
+/* ═══════════════════════════════════════════════
+   MAIN
+═══════════════════════════════════════════════ */
+.main{margin-left:var(--sidebar);flex:1;min-width:0;padding:26px 28px 56px}
+
+/* ═══════════════════════════════════════════════
+   TOP BAR
+═══════════════════════════════════════════════ */
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.topbar-left h1{font-size:20px;font-weight:800;letter-spacing:-.03em;color:var(--txt)}
+.topbar-left p{font-size:12px;color:var(--txt2);margin-top:3px;font-weight:400}
+
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* period tabs */
+.period-tabs{display:flex;background:var(--s1);border:1px solid var(--border);border-radius:9px;overflow:hidden}
+.pt{padding:7px 14px;font-size:11px;font-weight:600;color:var(--txt2);background:none;border:none;cursor:pointer;font-family:'Syne',sans-serif;transition:all .15s;white-space:nowrap}
+.pt:hover{color:var(--txt)}
+.pt.active{background:var(--accent);color:#fff}
+
+/* selects */
+.sel-wrap{position:relative}
+.sel-wrap::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--txt3);pointer-events:none}
+select.ctrl-sel{
+  appearance:none;-webkit-appearance:none;
+  background:var(--s1);border:1px solid var(--border);color:var(--txt2);
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:600;
+  padding:7px 28px 7px 12px;border-radius:9px;cursor:pointer;outline:none;
+}
+select.ctrl-sel:focus{border-color:var(--accent)}
+
+/* compare badge */
+.cmp-badge{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:5px 10px;border-radius:20px;border:1px solid var(--border);color:var(--txt2);background:var(--s1);white-space:nowrap}
+.cmp-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ═══════════════════════════════════════════════
+   NO DATA STATE
+═══════════════════════════════════════════════ */
+.no-data-banner{
+  background:var(--s2);border:1px dashed var(--border2);border-radius:var(--r);
+  padding:32px 24px;text-align:center;margin-bottom:20px;
+  display:none;
+}
+.no-data-banner.visible{display:block}
+.no-data-icon{font-size:32px;margin-bottom:10px;opacity:.5}
+.no-data-title{font-size:14px;font-weight:700;color:var(--txt);margin-bottom:6px}
+.no-data-desc{font-size:12px;color:var(--txt2);line-height:1.6;max-width:440px;margin:0 auto}
+
+/* ═══════════════════════════════════════════════
+   KPI ROW
+═══════════════════════════════════════════════ */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.kpi{
+  background:var(--s1);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px 18px;transition:border-color .2s;
+  animation:fup .35s ease both;
+}
+.kpi:hover{border-color:var(--border2)}
+@keyframes fup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.kpi:nth-child(1){animation-delay:.04s}.kpi:nth-child(2){animation-delay:.08s}
+.kpi:nth-child(3){animation-delay:.12s}.kpi:nth-child(4){animation-delay:.16s}
+.kpi:nth-child(5){animation-delay:.20s}
+
+.kpi-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.kpi-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.kpi-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--txt);letter-spacing:-.02em;line-height:1}
+.kpi-val.empty{color:var(--txt3);font-size:16px}
+.kpi-delta{margin-top:8px;display:flex;align-items:center;gap:5px}
+.delta-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+.delta-chip.pos{background:#10b98118;color:var(--green)}
+.delta-chip.neg{background:#f43f5e18;color:var(--red)}
+.delta-chip.neu{background:#3b82f618;color:var(--accent)}
+.delta-chip.empty{background:var(--s2);color:var(--txt3)}
+.delta-lbl{font-size:10px;color:var(--txt3)}
+
+/* ═══════════════════════════════════════════════
+   COMPARISON ROW
+═══════════════════════════════════════════════ */
+.cmp-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.cmp-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px}
+.cmp-type{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
+.cmp-pair{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.cmp-period-val{text-align:center;flex:1}
+.cmp-pname{font-size:10px;color:var(--txt3);font-weight:600;margin-bottom:3px}
+.cmp-pval{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--txt)}
+.cmp-pval.empty{color:var(--txt3);font-size:13px}
+.cmp-arrow{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
+.cmp-pct{font-family:'DM Mono',monospace;font-size:13px;font-weight:700}
+.cmp-pct.pos{color:var(--green)}.cmp-pct.neg{color:var(--red)}.cmp-pct.empty{color:var(--txt3)}
+.cmp-pct-lbl{font-size:9px;color:var(--txt3)}
+
+/* ═══════════════════════════════════════════════
+   PANELS / TABS
+═══════════════════════════════════════════════ */
+.tab-bar{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:18px}
+.tab{padding:9px 18px;font-size:12px;font-weight:600;color:var(--txt2);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:all .15s;font-family:'Syne',sans-serif;letter-spacing:-.01em}
+.tab:hover{color:var(--txt)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.panel{display:none}.panel.active{display:block}
+
+/* ═══════════════════════════════════════════════
+   CARDS / CHARTS
+═══════════════════════════════════════════════ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.g13{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:14px}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}
+
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;animation:fup .4s ease .2s both}
+.card-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:700;color:var(--txt);letter-spacing:-.01em}
+.card-sub{font-size:10px;color:var(--txt3);margin-top:2px;font-weight:400}
+.chart-wrap{position:relative}
+
+/* ═══════════════════════════════════════════════
+   RANK LIST
+═══════════════════════════════════════════════ */
+.rank-list{list-style:none}
+.rank-item{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border)}
+.rank-item:last-child{border-bottom:none}
+.rn{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt3);width:16px;text-align:right;flex-shrink:0}
+.rb{flex:1;min-width:0}
+.rname{font-size:11px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-bottom:4px;letter-spacing:-.01em}
+.rbar-bg{height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.rbar-fill{height:100%;border-radius:2px;transition:width .7s cubic-bezier(.16,1,.3,1)}
+.rv{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt2);flex-shrink:0;min-width:50px;text-align:right}
+.rq{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt3);flex-shrink:0;min-width:38px;text-align:right}
+
+/* empty rank item */
+.rank-empty{padding:20px;text-align:center;color:var(--txt3);font-size:11px}
+
+/* ═══════════════════════════════════════════════
+   HEAT GRID
+═══════════════════════════════════════════════ */
+.heat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.heat-item{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:11px 12px;transition:border-color .2s}
+.heat-item:hover{border-color:var(--border2)}
+.heat-name{font-size:10px;font-weight:600;color:var(--txt);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.heat-val{font-family:'DM Mono',monospace;font-size:17px;font-weight:500;line-height:1}
+.heat-lbl{font-size:9px;color:var(--txt3);margin-top:2px}
+.heat-bar{height:2px;background:var(--border);border-radius:1px;margin-top:8px}
+.heat-bar-f{height:100%;border-radius:1px;background:var(--purple);transition:width .7s ease}
+
+/* ═══════════════════════════════════════════════
+   TABLE
+═══════════════════════════════════════════════ */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{padding:9px 14px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);background:var(--s2);border-bottom:1px solid var(--border);white-space:nowrap;font-family:'Syne',sans-serif}
+th.r{text-align:right}
+td{padding:8px 14px;border-bottom:1px solid var(--border);color:var(--txt2);white-space:nowrap}
+td.r{text-align:right;font-family:'DM Mono',monospace;font-size:11px}
+td.name{font-weight:600;color:var(--txt);font-size:11px;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#ffffff03}
+.pill{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.03em}
+
+/* trend arrow inline */
+.trend-pos{color:var(--green)}.trend-neg{color:var(--red)}.trend-neu{color:var(--txt3)}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:1200px){.kpi-row{grid-template-columns:repeat(3,1fr)}.cmp-row{grid-template-columns:1fr 1fr}}
+@media(max-width:1000px){.g3{grid-template-columns:1fr 1fr}.g13,.g21{grid-template-columns:1fr}}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-230px)}.sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding:16px 14px 40px}
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .cmp-row,.g2,.g3,.g13,.g21{grid-template-columns:1fr}
+  .menu-btn{display:flex!important}
+}
+@media(max-width:480px){.kpi-row{grid-template-columns:1fr}}
+
+.menu-btn{display:none;align-items:center;justify-content:center;width:34px;height:34px;background:var(--s1);border:1px solid var(--border);border-radius:8px;cursor:pointer;color:var(--txt2);flex-shrink:0}
+
+/* ═══ HIGHLIGHTS BOX ═══ */
+.highlights-box{
+  background:linear-gradient(135deg,#0e1420 0%,#111d32 100%);
+  border:1px solid #1e3a5f;
+  border-radius:var(--r);
+  padding:18px 20px 16px;
+  margin-bottom:18px;
+  position:relative;
+  overflow:hidden;
+}
+.highlights-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#10b981,#3b82f6,#8b5cf6,#f59e0b,#f43f5e);
+}
+.hl-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.hl-icon{font-size:14px;color:var(--amber);flex-shrink:0;line-height:1}
+.hl-title{font-size:12px;font-weight:800;color:var(--txt);letter-spacing:-.01em}
+.hl-sub{font-size:10px;color:var(--txt3);margin-top:1px;font-weight:400}
+.hl-close{
+  margin-left:auto;background:none;border:none;color:var(--txt3);
+  font-size:18px;cursor:pointer;line-height:1;padding:0 2px;
+  transition:color .15s;flex-shrink:0;font-family:sans-serif;
+}
+.hl-close:hover{color:var(--txt)}
+.hl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.hl-item{
+  background:var(--s2);border:1px solid var(--border);border-radius:8px;
+  padding:12px 13px;transition:border-color .2s;
+}
+.hl-item:hover{border-color:var(--border2)}
+.hl-num{
+  font-family:'DM Mono',monospace;font-size:19px;font-weight:500;
+  color:var(--green);line-height:1;margin-bottom:7px;letter-spacing:-.02em;
+}
+.hl-num.hl-warn{color:var(--red)}
+.hl-desc{font-size:10px;color:var(--txt2);line-height:1.55;font-weight:400}
+.hl-desc strong{color:var(--txt);font-weight:700}
+@media(max-width:1000px){.hl-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.hl-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ SIDEBAR ═══════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-mark">O</div>
+    <div>
+      <div class="brand-name">Oakberry PUC</div>
+      <div class="brand-sub">Análise de Produtos</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-sec">Análises</div>
+    <button class="nav-btn active" data-tab="overview" onclick="setTab('overview')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Visão Geral
+    </button>
+    <button class="nav-btn" data-tab="evolucao" onclick="setTab('evolucao')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Evolução Temporal
+    </button>
+    <button class="nav-btn" data-tab="bowls" onclick="setTab('bowls')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M7 12h10"/><path d="M12 7v5"/></svg>
+      Bowls & Smoothies
+    </button>
+    <button class="nav-btn" data-tab="toppings" onclick="setTab('toppings')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      Toppings
+    </button>
+    <button class="nav-btn" data-tab="comparativo" onclick="setTab('comparativo')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Comparativo
+    </button>
+    <button class="nav-btn" data-tab="todos" onclick="setTab('todos')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Todos os SKUs
+    </button>
+
+    <div class="nav-sec" style="margin-top:14px">Período Ativo</div>
+    <div class="nav-btn" style="cursor:default;color:var(--txt3);font-size:11px" id="nav-period-info">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span id="nav-period-txt">—</span>
+    </div>
+    <div class="nav-btn" style="cursor:default;color:var(--txt3);font-size:11px" id="nav-skus-info">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      <span id="nav-skus-txt">0 SKUs com dados</span>
+    </div>
+  </nav>
+  <div class="sidebar-foot">
+    <div class="foot-chip" id="foot-range">Aguardando dados</div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════ MAIN ═══════════════════════════ -->
+<main class="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-left">
+        <h1>Análise de Produtos</h1>
+        <p>Oakberry PUC · Loja 5002 · <span id="subtitle-period">Nenhum período carregado</span></p>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <!-- Period mode -->
+      <div class="period-tabs">
+        <button class="pt active" onclick="setPeriodMode('mes',this)">Mês</button>
+        <button class="pt" onclick="setPeriodMode('trimestre',this)">Trimestre</button>
+        <button class="pt" onclick="setPeriodMode('ano',this)">Ano</button>
+        <button class="pt" onclick="setPeriodMode('acumulado',this)">Acumulado</button>
+      </div>
+      <!-- Year selector -->
+      <div class="sel-wrap">
+        <select class="ctrl-sel" id="selAno" onchange="onFilterChange()">
+          <option value="todos">Todos os anos</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+        </select>
+      </div>
+      <!-- Month/Quarter selector -->
+      <div class="sel-wrap" id="selMesWrap">
+        <select class="ctrl-sel" id="selMes" onchange="onFilterChange()">
+          <option value="todos">Todos os meses</option>
+          <option value="01">Janeiro</option>
+          <option value="02">Fevereiro</option>
+          <option value="03">Março</option>
+          <option value="04">Abril</option>
+          <option value="05">Maio</option>
+          <option value="06">Junho</option>
+          <option value="07">Julho</option>
+          <option value="08">Agosto</option>
+          <option value="09">Setembro</option>
+          <option value="10">Outubro</option>
+          <option value="11">Novembro</option>
+          <option value="12">Dezembro</option>
+        </select>
+      </div>
+      <div class="sel-wrap" id="selTriWrap" style="display:none">
+        <select class="ctrl-sel" id="selTri" onchange="onFilterChange()">
+          <option value="todos">Todos os trimestres</option>
+          <option value="1">T1 (Jan–Mar)</option>
+          <option value="2">T2 (Abr–Jun)</option>
+          <option value="3">T3 (Jul–Set)</option>
+          <option value="4">T4 (Out–Dez)</option>
+        </select>
+      </div>
+      <!-- Compare badge -->
+      <div class="cmp-badge"><div class="cmp-dot"></div><span id="cmp-badge-txt">Aguardando dados</span></div>
+    </div>
+  </div>
+
+  <!-- HIGHLIGHTS BOX -->
+  <div class="highlights-box" id="highlightsBox">
+    <div class="hl-header">
+      <div class="hl-icon">✦</div>
+      <div>
+        <div class="hl-title">Destaques do Período</div>
+        <div class="hl-sub">Ago/2025 → Mar/2026 · análise automática</div>
+      </div>
+      <button class="hl-close" onclick="document.getElementById('highlightsBox').style.display='none'" title="Fechar">×</button>
+    </div>
+    <div class="hl-grid">
+      <div class="hl-item">
+        <div class="hl-num">+463%</div>
+        <div class="hl-desc"><strong>Mar/26 explodiu</strong> vs Fev/26 — de R$11k para R$63k. Retorno dos alunos após recesso de verão impulsionou o melhor resultado recente da loja.</div>
+      </div>
+      <div class="hl-item">
+        <div class="hl-num hl-warn">−53%</div>
+        <div class="hl-desc"><strong>Recesso acadêmico</strong> derruba o caixa — Nov→Dez caiu 53% e Jan/Fev continuaram fracos. Sazonalidade do calendário PUC é o principal risco de receita.</div>
+      </div>
+      <div class="hl-item">
+        <div class="hl-num">74%</div>
+        <div class="hl-desc"><strong>Bowls dominam</strong> o faturamento em todos os meses. Classic Bowl 350ml é o SKU #1 absoluto — sozinho responde por ~32% da receita em meses cheios.</div>
+      </div>
+      <div class="hl-item">
+        <div class="hl-num">Set/25</div>
+        <div class="hl-desc"><strong>Melhor mês do período</strong> — R$70.296 e 2.060 bowls. Crescimento de +138% sobre Ago/25, coincidindo com o início do 2º semestre letivo da PUC.</div>
+      </div>
+      <div class="hl-item">
+        <div class="hl-num">#1</div>
+        <div class="hl-desc"><strong>Leite Ninho lidera toppings</strong> em todos os meses — até 1.895 porções em Set/25. Banana e Granola com Castanhas completam o pódio de forma consistente.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NO DATA BANNER -->
+  <div class="no-data-banner visible" id="noDataBanner">
+    <div class="no-data-icon">📂</div>
+    <div class="no-data-title">Estrutura pronta — aguardando bases mensais</div>
+    <div class="no-data-desc">
+      Envie os arquivos de <strong>Venda de Produtos</strong> mês a mês (Jan/2025 em diante).<br>
+      Cada arquivo será incorporado automaticamente ao objeto <code>DATA_MENSAL</code> no script.<br>
+      Todos os gráficos, comparativos MoM / QoQ / YoY e rankings serão calculados automaticamente.
+    </div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab active" data-tab="overview" onclick="setTab('overview')">Visão Geral</button>
+    <button class="tab" data-tab="evolucao" onclick="setTab('evolucao')">Evolução</button>
+    <button class="tab" data-tab="bowls" onclick="setTab('bowls')">Bowls & Smoothies</button>
+    <button class="tab" data-tab="toppings" onclick="setTab('toppings')">Toppings</button>
+    <button class="tab" data-tab="comparativo" onclick="setTab('comparativo')">Comparativo</button>
+    <button class="tab" data-tab="todos" onclick="setTab('todos')">Todos os SKUs</button>
+  </div>
+
+  <!-- ════════════ PANEL: OVERVIEW ════════════ -->
+  <div id="panel-overview" class="panel active">
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--accent)"></span>Faturamento Líquido</div>
+        <div class="kpi-val empty" id="kpi-fat">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-fat-mom">MoM —</span><span class="delta-lbl" id="kpi-fat-mom-lbl"></span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--green)"></span>Unidades Vendidas</div>
+        <div class="kpi-val empty" id="kpi-qty">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-qty-mom">MoM —</span><span class="delta-lbl" id="kpi-qty-mom-lbl"></span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--amber)"></span>Ticket Médio / Bowl</div>
+        <div class="kpi-val empty" id="kpi-ticket">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-ticket-mom">MoM —</span><span class="delta-lbl" id="kpi-ticket-mom-lbl"></span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--purple)"></span>SKUs Ativos</div>
+        <div class="kpi-val empty" id="kpi-skus">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-skus-mom">MoM —</span><span class="delta-lbl"></span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--cyan)"></span>Mix Toppings/Bowl</div>
+        <div class="kpi-val empty" id="kpi-mix">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-mix-mom">MoM —</span><span class="delta-lbl"></span></div>
+      </div>
+    </div>
+
+    <!-- Comparison row (MoM / QoQ / YoY) -->
+    <div class="cmp-row" id="cmpRow">
+      <div class="cmp-card">
+        <div class="cmp-type">📅 MoM — Mês anterior</div>
+        <div class="cmp-pair">
+          <div class="cmp-period-val">
+            <div class="cmp-pname" id="mom-prev-label">—</div>
+            <div class="cmp-pval empty" id="mom-prev-val">—</div>
+          </div>
+          <div class="cmp-arrow">
+            <div class="cmp-pct empty" id="mom-pct">—</div>
+            <div class="cmp-pct-lbl">variação</div>
+          </div>
+          <div class="cmp-period-val">
+            <div class="cmp-pname" id="mom-curr-label">—</div>
+            <div class="cmp-pval empty" id="mom-curr-val">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-card">
+        <div class="cmp-type">📊 QoQ — Acumulado trimestre atual vs anterior</div>
+        <div class="cmp-pair">
+          <div class="cmp-period-val">
+            <div class="cmp-pname" id="qoq-prev-label">—</div>
+            <div class="cmp-pval empty" id="qoq-prev-val">—</div>
+          </div>
+          <div class="cmp-arrow">
+            <div class="cmp-pct empty" id="qoq-pct">—</div>
+            <div class="cmp-pct-lbl">variação</div>
+          </div>
+          <div class="cmp-period-val">
+            <div class="cmp-pname" id="qoq-curr-label">—</div>
+            <div class="cmp-pval empty" id="qoq-curr-val">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-card">
+        <div class="cmp-type">📈 YoY — Mesmo trimestre do ano anterior</div>
+        <div class="cmp-pair">
+          <div class="cmp-period-val">
+            <div class="cmp-pname" id="yoy-prev-label">—</div>
+            <div class="cmp-pval empty" id="yoy-prev-val">—</div>
+          </div>
+          <div class="cmp-arrow">
+            <div class="cmp-pct empty" id="yoy-pct">—</div>
+            <div class="cmp-pct-lbl">variação</div>
+          </div>
+          <div class="cmp-period-val">
+            <div class="cmp-pname" id="yoy-curr-label">—</div>
+            <div class="cmp-pval empty" id="yoy-curr-val">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="g2">
+      <div class="card">
+        <div class="card-hdr">
+          <div><div class="card-title">Faturamento por Categoria</div><div class="card-sub">% sobre faturamento líquido total</div></div>
+        </div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chartCatFat"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr">
+          <div><div class="card-title">Volume por Categoria</div><div class="card-sub">Unidades vendidas por grupo</div></div>
+        </div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chartCatQty"></canvas></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Top 10 — Faturamento</div><div class="card-sub">Produtos com maior receita no período</div></div></div>
+        <ul class="rank-list" id="rankFat"><li class="rank-empty">Sem dados no período selecionado</li></ul>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Top 10 — Volume</div><div class="card-sub">Produtos com maior quantidade vendida</div></div></div>
+        <ul class="rank-list" id="rankQty"><li class="rank-empty">Sem dados no período selecionado</li></ul>
+      </div>
+    </div>
+
+  </div><!-- /overview -->
+
+  <!-- ════════════ PANEL: EVOLUÇÃO ════════════ -->
+  <div id="panel-evolucao" class="panel">
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-hdr">
+        <div><div class="card-title">Faturamento Líquido — Evolução Mensal</div><div class="card-sub">Série histórica por mês</div></div>
+      </div>
+      <div class="chart-wrap" style="height:220px"><canvas id="chartEvolFat"></canvas></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Evolução de Volume (Bowls)</div><div class="card-sub">Unidades vendidas mês a mês</div></div></div>
+        <div class="chart-wrap" style="height:180px"><canvas id="chartEvolBowls"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Crescimento MoM — Faturamento</div><div class="card-sub">% variação em relação ao mês anterior</div></div></div>
+        <div class="chart-wrap" style="height:180px"><canvas id="chartMom"></canvas></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Mix de Categorias — Evolução</div><div class="card-sub">Participação % de cada categoria no faturamento mensal</div></div></div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chartCatEvol"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Ticket Médio / Bowl — Evolução</div><div class="card-sub">Faturamento ÷ unidades de bowl por mês</div></div></div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chartTicket"></canvas></div>
+      </div>
+    </div>
+  </div><!-- /evolucao -->
+
+  <!-- ════════════ PANEL: BOWLS & SMOOTHIES ════════════ -->
+  <div id="panel-bowls" class="panel">
+    <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--green)"></span>Fat. Bowls</div>
+        <div class="kpi-val empty" id="kpi-fat-bowl">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-fat-bowl-pct">MoM —</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--cyan)"></span>Fat. Smoothies</div>
+        <div class="kpi-val empty" id="kpi-fat-smoothie">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-fat-smoothie-pct">MoM —</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--amber)"></span>Qtd Bowls</div>
+        <div class="kpi-val empty" id="kpi-qty-bowl">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-qty-bowl-pct">MoM —</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--purple)"></span>Qtd Smoothies</div>
+        <div class="kpi-val empty" id="kpi-qty-smoothie">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-qty-smoothie-pct">MoM —</span></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Bowls — Faturamento por SKU</div><div class="card-sub">Período selecionado</div></div></div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chartBowlFat"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Smoothies — Faturamento por SKU</div><div class="card-sub">Período selecionado</div></div></div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chartSmoothieFat"></canvas></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Classic Bowl — Evolução Mensal</div><div class="card-sub">SKU principal · qtd e faturamento</div></div></div>
+        <div class="chart-wrap" style="height:180px"><canvas id="chartClassicEvol"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Participação Bowls no Total</div><div class="card-sub">% do faturamento total que vem de bowls</div></div></div>
+        <div class="chart-wrap" style="height:180px"><canvas id="chartBowlShare"></canvas></div>
+      </div>
+    </div>
+  </div><!-- /bowls -->
+
+  <!-- ════════════ PANEL: TOPPINGS ════════════ -->
+  <div id="panel-toppings" class="panel">
+    <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--purple)"></span>Toppings Aplicados</div>
+        <div class="kpi-val empty" id="kpi-topp-total">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-topp-mom">MoM —</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--amber)"></span>Mix / Bowl</div>
+        <div class="kpi-val empty" id="kpi-topp-mix">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty">média de toppings</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--green)"></span>Fat. Toppings Extras</div>
+        <div class="kpi-val empty" id="kpi-topp-fat">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-topp-fat-mom">MoM —</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--cyan)"></span>#1 Topping</div>
+        <div class="kpi-val empty" style="font-size:13px" id="kpi-topp-top">—</div>
+        <div class="kpi-delta"><span class="delta-chip empty" id="kpi-topp-top-qty">0 porções</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-hdr"><div><div class="card-title">Ranking — Toppings Gratuitos (Porções Aplicadas)</div><div class="card-sub">Ordenado por volume · período selecionado</div></div></div>
+      <div class="chart-wrap" style="height:260px"><canvas id="chartToppingRank"></canvas></div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Top Toppings — Calor de Popularidade</div><div class="card-sub">Período selecionado</div></div></div>
+        <div class="heat-grid" id="heatGrid" style="margin-top:8px">
+          <div class="heat-item"><div class="heat-name">Aguardando dados</div><div class="heat-val" style="color:var(--txt3)">—</div><div class="heat-lbl">porções</div><div class="heat-bar"><div class="heat-bar-f" style="width:0%"></div></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Toppings Extras — Ranking por Faturamento</div><div class="card-sub">Add-ons cobrados (Morango, Whey, Pastas…)</div></div></div>
+        <ul class="rank-list" id="rankExtras"><li class="rank-empty">Sem dados no período selecionado</li></ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr"><div><div class="card-title">Top 5 Toppings — Evolução Mensal</div><div class="card-sub">Porções aplicadas mês a mês</div></div></div>
+      <div class="chart-wrap" style="height:200px"><canvas id="chartToppingEvol"></canvas></div>
+    </div>
+  </div><!-- /toppings -->
+
+  <!-- ════════════ PANEL: COMPARATIVO ════════════ -->
+  <div id="panel-comparativo" class="panel">
+
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-hdr">
+        <div><div class="card-title">Comparativo de Faturamento — MoM / QoQ / YoY</div><div class="card-sub">Barras agrupadas para comparação direta de períodos</div></div>
+      </div>
+      <div class="chart-wrap" style="height:220px"><canvas id="chartCmpFat"></canvas></div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Crescimento MoM por Categoria</div><div class="card-sub">Variação % sobre mês anterior</div></div></div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chartCmpCatMom"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div><div class="card-title">Crescimento YoY por Categoria</div><div class="card-sub">Variação % sobre mesmo mês do ano anterior</div></div></div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chartCmpCatYoy"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr"><div><div class="card-title">Tabela de Variações — Produtos em Destaque</div><div class="card-sub">Top SKUs com maior crescimento ou queda no período vs anterior</div></div></div>
+      <div class="tbl-wrap" style="margin-top:0">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th><th>Categoria</th>
+              <th class="r">Período atual</th>
+              <th class="r">Período anterior</th>
+              <th class="r">Var. Fat.</th>
+              <th class="r">Var. Qtd</th>
+            </tr>
+          </thead>
+          <tbody id="tblCmp">
+            <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--txt3)">Sem dados disponíveis</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div><!-- /comparativo -->
+
+  <!-- ════════════ PANEL: TODOS OS SKUs ════════════ -->
+  <div id="panel-todos" class="panel">
+    <div class="card" style="padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="font-size:12px;font-weight:600;color:var(--txt2)">Filtrar:</div>
+      <div class="sel-wrap">
+        <select class="ctrl-sel" id="tblCatFilter" onchange="renderTable()">
+          <option value="todos">Todas as categorias</option>
+          <option value="Bowl">Bowl</option>
+          <option value="Smoothie">Smoothie</option>
+          <option value="Topping Grátis">Topping Grátis</option>
+          <option value="Topping Extra">Topping Extra</option>
+          <option value="Bebida">Bebida</option>
+          <option value="Oakbar">Oakbar</option>
+          <option value="Crock">Crock</option>
+        </select>
+      </div>
+      <div class="sel-wrap">
+        <select class="ctrl-sel" id="tblSortBy" onchange="renderTable()">
+          <option value="fat">Ordenar: Faturamento</option>
+          <option value="qty">Ordenar: Quantidade</option>
+          <option value="nome">Ordenar: Nome</option>
+          <option value="mom">Ordenar: MoM %</option>
+        </select>
+      </div>
+      <div style="font-size:11px;color:var(--txt3);margin-left:auto"><span id="tblCount">0</span> SKUs exibidos</div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Produto</th><th>Categoria</th>
+            <th class="r">Qtd</th>
+            <th class="r">Venda Bruta</th>
+            <th class="r">Desconto</th>
+            <th class="r">Fat. Líquido</th>
+            <th class="r">% Total</th>
+            <th class="r">MoM Fat.</th>
+            <th class="r">YoY Fat.</th>
+          </tr>
+        </thead>
+        <tbody id="tblTodos">
+          <tr><td colspan="10" style="text-align:center;padding:28px;color:var(--txt3)">Sem dados disponíveis</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div><!-- /todos -->
+
+</main><!-- /main -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   DATA MENSAL
+   ───────────────────────────────────────────────────────────────────
+   Estrutura esperada por mês:
+   "YYYY-MM": [
+     { id, desc, cat, qty, vb, desc_, fl },
+     ...
+   ]
+
+   Categorias válidas:
+     "Bowl" | "Smoothie" | "Topping Grátis" | "Topping Extra"
+     | "Bebida" | "Oakbar" | "Crock"
+
+   INSERIR OS MESES AQUI conforme os arquivos chegarem:
+═══════════════════════════════════════════════════════════════════ */
+const DATA_MENSAL = {
+  "2025-08": [
+    {id:"100313",desc:"Água de coco integral (330 ml)",cat:"Bebida",qty:1,vb:10.49,desc_:3.5,fl:10.49},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:5,vb:35.0,desc_:0.0,fl:35.0},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:103,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:50,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:391,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100013",desc:"Berry Fusion (500ml)",cat:"Bebida",qty:4,vb:123.96,desc_:0.0,fl:123.96},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:181,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:57,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:42,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:410,vb:10294.07,desc_:625.0,fl:9806.9},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:104,vb:2192.19,desc_:51.27,fl:2181.69},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:82,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:19,vb:58.0,desc_:0.0,fl:58.0},
+    {id:"100345",desc:"CROCK BANANA",cat:"Crock",qty:3,vb:81.86,desc_:11.42,fl:79.06},
+    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:2,vb:72.49,desc_:0.0,fl:72.49},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:74,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:249,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:116,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:245,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:722,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:32,vb:160.0,desc_:0.5,fl:159.5},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:30,vb:94.5,desc_:2.4,fl:92.1},
+    {id:"100075",desc:"Mix de Nuts (50g)",cat:"Topping Extra",qty:2,vb:19.98,desc_:1.0,fl:18.98},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:154,vb:778.0,desc_:14.76,fl:763.24},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:15,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:15,vb:458.71,desc_:31.84,fl:449.41},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:18,vb:551.36,desc_:21.86,fl:548.26},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:3,vb:29.97,desc_:0.0,fl:29.97},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:1,vb:26.99,desc_:5.0,fl:26.99},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:5,vb:68.96,desc_:6.39,fl:67.56},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:11,vb:157.89,desc_:0.0,fl:157.89},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:6,vb:83.94,desc_:2.8,fl:81.14},
+    {id:"100009",desc:"Oakberry Açaí Consumo Imediato (850ml)",cat:"Topping Extra",qty:5,vb:234.95,desc_:93.97,fl:140.98},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:324,vb:6493.04,desc_:135.7,fl:6411.06},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:33,vb:115.75,desc_:3.7,fl:113.3},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:60,vb:185.0,desc_:4.04,fl:180.96},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:40,vb:120.5,desc_:3.29,fl:117.21},
+    {id:"100018",desc:"Pb Lovers (500ml)",cat:"Bebida",qty:2,vb:63.98,desc_:0.0,fl:63.98},
+    {id:"100016",desc:"Power Punch (500ml)",cat:"Bebida",qty:2,vb:81.98,desc_:0.0,fl:81.98},
+    {id:"100024",desc:"Protein Booster: Açaí (270ml)",cat:"Bebida",qty:5,vb:49.95,desc_:0.0,fl:49.95},
+    {id:"100023",desc:"Protein Booster: Açaí com Guaraná (270ml)",cat:"Bebida",qty:1,vb:9.99,desc_:0.0,fl:9.99},
+    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:1,vb:35.99,desc_:0.0,fl:35.99},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:16,vb:637.84,desc_:25.9,fl:633.94},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:4,vb:126.97,desc_:9.64,fl:122.32},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:1,vb:28.99,desc_:0.0,fl:28.99},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:23,vb:207.0,desc_:2.7,fl:204.3},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:52,vb:624.0,desc_:7.2,fl:616.8},
+    {id:"100076",desc:"Whey protein Coco (14g)",cat:"Topping Extra",qty:29,vb:261.0,desc_:1.8,fl:259.2},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:129,vb:4041.51,desc_:120.84,fl:3953.17},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:62,vb:1621.68,desc_:30.6,fl:1604.78},
+    {id:"100102",desc:"Zen Matcha Smoothies 350 ML",cat:"Smoothie",qty:3,vb:86.97,desc_:0.0,fl:86.97},
+  ],
+  "2025-09": [
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:4,vb:31.0,desc_:0.0,fl:31.0},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:17,vb:122.0,desc_:0.7,fl:121.3},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:206,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:105,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:1084,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100013",desc:"Berry Fusion (500ml)",cat:"Bebida",qty:2,vb:61.98,desc_:0.0,fl:61.98},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:358,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:109,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:147,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:922,vb:23300.8,desc_:1252.22,fl:22352.56},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:245,vb:5221.05,desc_:80.15,fl:5207.4},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:220,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:51,vb:163.5,desc_:0.6,fl:162.9},
+    {id:"100345",desc:"CROCK BANANA",cat:"Crock",qty:2,vb:69.0,desc_:0.0,fl:69.0},
+    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:3,vb:98.97,desc_:0.0,fl:98.97},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:109,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:636,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:318,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:601,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:1895,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:68,vb:342.0,desc_:5.5,fl:336.5},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:59,vb:182.0,desc_:4.65,fl:177.35},
+    {id:"100075",desc:"Mix de Nuts (50g)",cat:"Topping Extra",qty:2,vb:19.98,desc_:0.0,fl:19.98},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:369,vb:1860.0,desc_:15.75,fl:1844.25},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:26,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:40,vb:1237.32,desc_:56.78,fl:1215.62},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:49,vb:1518.08,desc_:56.83,fl:1514.98},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:18,vb:189.82,desc_:0.0,fl:189.82},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:5,vb:135.97,desc_:17.98,fl:135.97},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:4,vb:55.96,desc_:0.0,fl:55.96},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:21,vb:313.79,desc_:2.8,fl:310.99},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:15,vb:209.85,desc_:0.0,fl:209.85},
+    {id:"100009",desc:"Oakberry Açaí Consumo Imediato (850ml)",cat:"Topping Extra",qty:7,vb:326.93,desc_:139.97,fl:232.96},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:716,vb:14302.65,desc_:287.32,fl:14132.66},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:4,vb:20.0,desc_:0.0,fl:20.0},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:48,vb:180.0,desc_:2.1,fl:177.9},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:139,vb:423.0,desc_:2.25,fl:420.75},
+    {id:"100045",desc:"Pasta de Amendoim (Pote 450g)",cat:"Topping Extra",qty:1,vb:27.99,desc_:0.0,fl:27.99},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:162,vb:492.0,desc_:0.6,fl:491.4},
+    {id:"100018",desc:"Pb Lovers (500ml)",cat:"Bebida",qty:4,vb:127.96,desc_:0.0,fl:127.96},
+    {id:"100024",desc:"Protein Booster: Açaí (270ml)",cat:"Bebida",qty:2,vb:19.98,desc_:0.0,fl:19.98},
+    {id:"100023",desc:"Protein Booster: Açaí com Guaraná (270ml)",cat:"Bebida",qty:2,vb:19.98,desc_:0.0,fl:19.98},
+    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:2,vb:71.98,desc_:0.0,fl:71.98},
+    {id:"100100",desc:"Super Glow Smoothies  350(ml)",cat:"Smoothie",qty:2,vb:57.98,desc_:0.0,fl:57.98},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:48,vb:1888.26,desc_:77.16,fl:1884.36},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:17,vb:528.2,desc_:62.63,fl:528.2},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:2,vb:57.98,desc_:0.0,fl:57.98},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:79,vb:717.0,desc_:16.2,fl:700.8},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:132,vb:1590.0,desc_:21.6,fl:1568.4},
+    {id:"100076",desc:"Whey protein Coco (14g)",cat:"Topping Extra",qty:20,vb:180.0,desc_:3.6,fl:176.4},
+    {id:"100077",desc:"Whey protein Coco (28g)",cat:"Topping Extra",qty:1,vb:14.0,desc_:0.0,fl:14.0},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:374,vb:11819.15,desc_:462.41,fl:11696.7},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:137,vb:3592.4,desc_:43.83,fl:3576.8},
+    {id:"100102",desc:"Zen Matcha Smoothies 350 ML",cat:"Smoothie",qty:6,vb:173.94,desc_:0.0,fl:173.94},
+  ],
+  "2025-10": [
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:3,vb:21.0,desc_:0.0,fl:21.0},
+    {id:"100313",desc:"Água de coco integral (330 ml)",cat:"Bebida",qty:3,vb:32.97,desc_:0.0,fl:32.97},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:10,vb:70.0,desc_:0.0,fl:70.0},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:168,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:77,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:747,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100013",desc:"Berry Fusion (500ml)",cat:"Bebida",qty:3,vb:94.97,desc_:5.0,fl:94.97},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:223,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:71,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:108,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:683,vb:17145.12,desc_:1262.33,fl:16231.84},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:131,vb:2764.69,desc_:26.8,fl:2747.89},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:139,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:28,vb:94.0,desc_:0.3,fl:93.7},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:66,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:436,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:214,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:480,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:1304,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:36,vb:181.0,desc_:1.0,fl:180.0},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:33,vb:100.0,desc_:2.56,fl:97.44},
+    {id:"100075",desc:"Mix de Nuts (50g)",cat:"Topping Extra",qty:5,vb:49.95,desc_:2.0,fl:47.95},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:209,vb:1059.0,desc_:5.5,fl:1053.5},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:32,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:26,vb:809.78,desc_:45.06,fl:797.38},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:34,vb:1034.99,desc_:79.37,fl:1034.99},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:11,vb:114.89,desc_:0.0,fl:114.89},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:4,vb:115.96,desc_:0.0,fl:115.96},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:8,vb:111.92,desc_:0.0,fl:111.92},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:17,vb:237.83,desc_:0.0,fl:237.83},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:13,vb:181.87,desc_:0.0,fl:181.87},
+    {id:"100009",desc:"Oakberry Açaí Consumo Imediato (850ml)",cat:"Topping Extra",qty:1,vb:53.0,desc_:4.99,fl:53.0},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:497,vb:9948.81,desc_:132.22,fl:9862.81},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:5,vb:23.5,desc_:0.0,fl:23.5},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:28,vb:101.0,desc_:1.75,fl:99.25},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:86,vb:262.0,desc_:0.0,fl:262.0},
+    {id:"100045",desc:"Pasta de Amendoim (Pote 450g)",cat:"Topping Extra",qty:1,vb:27.99,desc_:0.0,fl:27.99},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:127,vb:398.0,desc_:0.0,fl:398.0},
+    {id:"100018",desc:"Pb Lovers (500ml)",cat:"Bebida",qty:1,vb:31.99,desc_:0.0,fl:31.99},
+    {id:"100016",desc:"Power Punch (500ml)",cat:"Bebida",qty:1,vb:40.99,desc_:0.0,fl:40.99},
+    {id:"100024",desc:"Protein Booster: Açaí (270ml)",cat:"Bebida",qty:3,vb:29.97,desc_:0.0,fl:29.97},
+    {id:"100023",desc:"Protein Booster: Açaí com Guaraná (270ml)",cat:"Bebida",qty:5,vb:49.95,desc_:0.0,fl:49.95},
+    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:2,vb:74.99,desc_:4.99,fl:74.99},
+    {id:"100100",desc:"Super Glow Smoothies  350(ml)",cat:"Smoothie",qty:1,vb:28.99,desc_:0.0,fl:28.99},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:37,vb:1550.96,desc_:84.57,fl:1547.06},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:14,vb:445.86,desc_:20.0,fl:445.86},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:3,vb:86.97,desc_:0.0,fl:86.97},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:60,vb:546.0,desc_:7.2,fl:538.8},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:92,vb:1112.0,desc_:7.2,fl:1104.8},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:241,vb:7627.56,desc_:301.58,fl:7545.41},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:98,vb:2581.03,desc_:46.59,fl:2578.43},
+    {id:"100102",desc:"Zen Matcha Smoothies 350 ML",cat:"Smoothie",qty:4,vb:115.96,desc_:2.9,fl:113.06},
+  ],
+  "2025-11": [
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:5,vb:38.0,desc_:0.0,fl:38.0},
+    {id:"100313",desc:"Água de coco integral (330 ml)",cat:"Bebida",qty:2,vb:21.98,desc_:0.0,fl:21.98},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:8,vb:56.0,desc_:0.0,fl:56.0},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:193,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:86,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:855,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100013",desc:"Berry Fusion (500ml)",cat:"Bebida",qty:1,vb:30.99,desc_:0.0,fl:30.99},
+    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:1,vb:45.99,desc_:0.0,fl:45.99},
+    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:9,vb:341.91,desc_:0.0,fl:341.91},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:277,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:98,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:101,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:701,vb:17720.48,desc_:1584.8,fl:16391.19},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:144,vb:3048.29,desc_:61.57,fl:3020.99},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:155,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:21,vb:67.0,desc_:0.3,fl:66.7},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:70,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:501,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:301,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:438,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:1316,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:40,vb:201.0,desc_:2.0,fl:199.0},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:26,vb:80.0,desc_:1.2,fl:78.8},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:254,vb:1304.0,desc_:7.6,fl:1296.4},
+    {id:"100014",desc:"Nest.Oak (500ml)",cat:"Bebida",qty:1,vb:32.99,desc_:5.0,fl:32.99},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:31,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:33,vb:1055.58,desc_:72.79,fl:1046.28},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:44,vb:1369.14,desc_:125.52,fl:1362.94},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:11,vb:109.89,desc_:0.0,fl:109.89},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:16,vb:415.84,desc_:0.0,fl:415.84},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:9,vb:125.91,desc_:4.2,fl:121.71},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:13,vb:181.87,desc_:1.4,fl:180.47},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:3,vb:41.97,desc_:1.39,fl:40.58},
+    {id:"100009",desc:"Oakberry Açaí Consumo Imediato (850ml)",cat:"Topping Extra",qty:2,vb:99.99,desc_:4.99,fl:99.99},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:599,vb:11943.54,desc_:454.47,fl:11789.54},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:14,vb:70.0,desc_:0.0,fl:70.0},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:48,vb:173.61,desc_:3.84,fl:171.51},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:92,vb:289.0,desc_:1.8,fl:287.2},
+    {id:"100045",desc:"Pasta de Amendoim (Pote 450g)",cat:"Topping Extra",qty:1,vb:27.99,desc_:2.8,fl:25.19},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:99,vb:317.0,desc_:0.0,fl:317.0},
+    {id:"100383",desc:"Pasta de Avelã (20g)",cat:"Topping Extra",qty:2,vb:8.0,desc_:0.0,fl:8.0},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:14,vb:58.0,desc_:1.2,fl:56.8},
+    {id:"100382",desc:"Pasta de Pistache (20g)",cat:"Topping Extra",qty:3,vb:12.0,desc_:0.0,fl:12.0},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:14,vb:59.0,desc_:0.4,fl:58.6},
+    {id:"100018",desc:"Pb Lovers (500ml)",cat:"Bebida",qty:3,vb:95.97,desc_:0.0,fl:95.97},
+    {id:"100016",desc:"Power Punch (500ml)",cat:"Bebida",qty:2,vb:81.98,desc_:0.0,fl:81.98},
+    {id:"100024",desc:"Protein Booster: Açaí (270ml)",cat:"Bebida",qty:12,vb:124.88,desc_:0.0,fl:124.88},
+    {id:"100023",desc:"Protein Booster: Açaí com Guaraná (270ml)",cat:"Bebida",qty:16,vb:159.84,desc_:0.0,fl:159.84},
+    {id:"100384",desc:"Smoothie Avelã",cat:"Smoothie",qty:4,vb:115.96,desc_:0.0,fl:115.96},
+    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:4,vb:143.96,desc_:3.6,fl:140.36},
+    {id:"100100",desc:"Super Glow Smoothies  350(ml)",cat:"Smoothie",qty:4,vb:115.96,desc_:2.9,fl:113.06},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:35,vb:1440.15,desc_:103.3,fl:1432.35},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:20,vb:663.8,desc_:20.0,fl:663.8},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:1,vb:28.99,desc_:0.0,fl:28.99},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:73,vb:666.0,desc_:15.3,fl:650.7},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:85,vb:1034.0,desc_:4.8,fl:1029.2},
+    {id:"100076",desc:"Whey protein Coco (14g)",cat:"Topping Extra",qty:2,vb:21.0,desc_:0.0,fl:21.0},
+    {id:"100077",desc:"Whey protein Coco (28g)",cat:"Topping Extra",qty:1,vb:12.0,desc_:0.0,fl:12.0},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:306,vb:9651.59,desc_:562.65,fl:9529.14},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:82,vb:2143.71,desc_:51.87,fl:2133.31},
+    {id:"100102",desc:"Zen Matcha Smoothies 350 ML",cat:"Smoothie",qty:6,vb:173.94,desc_:0.0,fl:173.94},
+  ],
+  "2025-12": [
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:3,vb:21.0,desc_:0.0,fl:21.0},
+    {id:"100313",desc:"Água de coco integral (330 ml)",cat:"Bebida",qty:3,vb:35.97,desc_:0.0,fl:35.97},
+    {id:"100021",desc:"Água Na Caixa 500ml",cat:"Bebida",qty:1,vb:10.0,desc_:0.0,fl:10.0},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:8,vb:56.0,desc_:0.7,fl:55.3},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:100,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:46,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:406,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:7,vb:256.93,desc_:13.5,fl:253.43},
+    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:3,vb:120.97,desc_:5.0,fl:120.97},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:155,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:43,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:62,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:339,vb:8728.31,desc_:1283.25,fl:7636.46},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:44,vb:928.07,desc_:34.99,fl:917.57},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:69,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:4,vb:18.0,desc_:0.0,fl:18.0},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:58,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:255,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:151,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:222,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:513,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:22,vb:111.0,desc_:0.5,fl:110.5},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:24,vb:83.0,desc_:1.35,fl:81.65},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:121,vb:628.0,desc_:7.01,fl:620.99},
+    {id:"100014",desc:"Nest.Oak (500ml)",cat:"Bebida",qty:1,vb:30.99,desc_:0.0,fl:30.99},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:20,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:5,vb:154.06,desc_:11.19,fl:147.86},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:14,vb:414.49,desc_:60.83,fl:397.43},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:4,vb:39.96,desc_:0.0,fl:39.96},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:2,vb:75.98,desc_:0.0,fl:75.98},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:3,vb:41.97,desc_:0.0,fl:41.97},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:4,vb:54.97,desc_:4.99,fl:54.97},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:1,vb:13.99,desc_:0.0,fl:13.99},
+    {id:"100009",desc:"Oakberry Açaí Consumo Imediato (850ml)",cat:"Topping Extra",qty:5,vb:275.95,desc_:15.0,fl:275.95},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:301,vb:6100.32,desc_:267.59,fl:5925.4},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:1,vb:5.0,desc_:0.0,fl:5.0},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:30,vb:108.72,desc_:1.48,fl:108.02},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:45,vb:150.0,desc_:2.87,fl:147.13},
+    {id:"100045",desc:"Pasta de Amendoim (Pote 450g)",cat:"Topping Extra",qty:1,vb:27.99,desc_:0.0,fl:27.99},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:34,vb:104.0,desc_:0.6,fl:103.4},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:33,vb:145.0,desc_:2.2,fl:142.8},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:15,vb:61.0,desc_:0.6,fl:60.4},
+    {id:"100024",desc:"Protein Booster: Açaí (270ml)",cat:"Bebida",qty:5,vb:49.95,desc_:0.0,fl:49.95},
+    {id:"100384",desc:"Smoothie Avelã",cat:"Smoothie",qty:1,vb:28.99,desc_:0.0,fl:28.99},
+    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:2,vb:70.48,desc_:11.5,fl:70.48},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:29,vb:1220.21,desc_:27.3,fl:1212.41},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:13,vb:423.12,desc_:71.07,fl:413.8},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:28,vb:264.0,desc_:5.4,fl:258.6},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:31,vb:388.0,desc_:1.2,fl:386.8},
+    {id:"100076",desc:"Whey protein Coco (14g)",cat:"Topping Extra",qty:2,vb:24.0,desc_:0.0,fl:24.0},
+    {id:"100077",desc:"Whey protein Coco (28g)",cat:"Topping Extra",qty:2,vb:28.0,desc_:0.0,fl:28.0},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:138,vb:4559.26,desc_:241.8,fl:4487.96},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:32,vb:883.18,desc_:13.7,fl:877.98},
+  ],
+  "2026-01": [
+    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:3,vb:89.97,desc_:0.0,fl:89.97},
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:2,vb:16.0,desc_:0.0,fl:16.0},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:8,vb:62.0,desc_:0.0,fl:62.0},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:55,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:18,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:185,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:1,vb:36.99,desc_:0.0,fl:36.99},
+    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:6,vb:267.94,desc_:0.0,fl:267.94},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:90,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:21,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:21,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:212,vb:5745.57,desc_:1158.33,fl:4781.61},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:16,vb:376.85,desc_:11.89,fl:369.95},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:61,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:9,vb:29.0,desc_:1.2,fl:27.8},
+    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:2,vb:77.98,desc_:0.0,fl:77.98},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:25,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:169,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:64,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:97,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:266,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:11,vb:56.0,desc_:0.76,fl:55.24},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:11,vb:37.0,desc_:1.8,fl:35.2},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:52,vb:275.0,desc_:8.01,fl:266.99},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:16,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:11,vb:373.89,desc_:0.0,fl:373.89},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:10,vb:338.9,desc_:13.4,fl:335.5},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:2,vb:23.98,desc_:0.0,fl:23.98},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:1,vb:27.99,desc_:0.0,fl:27.99},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:4,vb:55.96,desc_:0.0,fl:55.96},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:1,vb:13.99,desc_:0.0,fl:13.99},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:1,vb:13.99,desc_:0.0,fl:13.99},
+    {id:"100009",desc:"Oakberry Açaí Consumo Imediato (850ml)",cat:"Topping Extra",qty:8,vb:458.93,desc_:24.39,fl:449.53},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:178,vb:3835.73,desc_:230.8,fl:3628.42},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:3,vb:15.0,desc_:0.0,fl:15.0},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:23,vb:106.0,desc_:11.13,fl:94.87},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:28,vb:96.0,desc_:3.0,fl:93.0},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:7,vb:28.0,desc_:0.4,fl:27.6},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:17,vb:74.0,desc_:2.4,fl:71.6},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:10,vb:40.0,desc_:1.61,fl:38.39},
+    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:3,vb:107.97,desc_:0.0,fl:107.97},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:22,vb:939.6,desc_:78.48,fl:927.3},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:1,vb:36.99,desc_:5.0,fl:36.99},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:9,vb:87.0,desc_:0.0,fl:87.0},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:10,vb:130.0,desc_:1.2,fl:128.8},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:68,vb:2344.24,desc_:190.24,fl:2282.34},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:10,vb:295.91,desc_:22.79,fl:293.11},
+  ],
+  "2026-02": [
+    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:1,vb:29.99,desc_:0.0,fl:29.99},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:8,vb:64.0,desc_:4.0,fl:60.0},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:39,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:32,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:140,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:1,vb:36.99,desc_:0.0,fl:36.99},
+    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:1,vb:39.99,desc_:0.0,fl:39.99},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:68,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:25,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:23,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:181,vb:4981.71,desc_:1008.1,fl:4075.09},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:12,vb:276.89,desc_:4.99,fl:276.89},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:34,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:4,vb:14.0,desc_:0.3,fl:13.7},
+    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:1,vb:38.99,desc_:0.0,fl:38.99},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:15,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:111,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:68,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:89,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:222,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:8,vb:42.0,desc_:0.5,fl:41.5},
+    {id:"100400",desc:"Mel & Maracujá",cat:"Topping Extra",qty:2,vb:79.98,desc_:0.0,fl:79.98},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:7,vb:25.0,desc_:0.75,fl:24.25},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:31,vb:155.0,desc_:9.0,fl:146.0},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:4,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:3,vb:101.97,desc_:5.1,fl:96.87},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:6,vb:203.94,desc_:0.0,fl:203.94},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:1,vb:11.99,desc_:0.0,fl:11.99},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:2,vb:55.98,desc_:0.0,fl:55.98},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:1,vb:13.99,desc_:0.0,fl:13.99},
+    {id:"100422",desc:"Oakberry Açaí Consumo Imediato (850ml).",cat:"Topping Extra",qty:1,vb:48.99,desc_:0.0,fl:48.99},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:114,vb:2531.89,desc_:149.35,fl:2417.51},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:11,vb:55.0,desc_:2.0,fl:53.0},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:37,vb:117.0,desc_:5.57,fl:111.43},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:9,vb:40.0,desc_:0.0,fl:40.0},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:16,vb:75.0,desc_:0.6,fl:74.4},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:10,vb:44.0,desc_:0.0,fl:44.0},
+    {id:"100016",desc:"Power Punch (500ml)",cat:"Bebida",qty:1,vb:46.99,desc_:5.0,fl:46.99},
+    {id:"100384",desc:"Smoothie Avelã",cat:"Smoothie",qty:3,vb:95.97,desc_:0.0,fl:95.97},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:17,vb:756.83,desc_:70.5,fl:736.33},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:1,vb:27.99,desc_:14.0,fl:27.99},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:1,vb:31.99,desc_:0.0,fl:31.99},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:3,vb:30.0,desc_:0.9,fl:29.1},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:8,vb:98.0,desc_:0.0,fl:98.0},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:64,vb:2209.06,desc_:262.13,fl:2006.91},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:8,vb:230.42,desc_:23.5,fl:230.42},
+  ],
+  "2026-03": [
+    {id:"100080",desc:"Açaí Bowl Comfy Chia Pudding (350ml)",cat:"Bowl",qty:13,vb:381.89,desc_:9.98,fl:381.89},
+    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:11,vb:329.89,desc_:0.0,fl:329.89},
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:1,vb:10.99,desc_:0.0,fl:10.99},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:9,vb:72.0,desc_:0.0,fl:72.0},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:124,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:124,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:763,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:5,vb:184.95,desc_:0.0,fl:184.95},
+    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:3,vb:119.97,desc_:0.0,fl:119.97},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:270,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:115,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:98,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:804,vb:21954.09,desc_:1672.44,fl:20611.52},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:170,vb:3922.32,desc_:16.88,fl:3915.42},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:156,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:15,vb:49.0,desc_:0.3,fl:48.7},
+    {id:"100345",desc:"CROCK BANANA",cat:"Crock",qty:5,vb:169.95,desc_:6.8,fl:163.15},
+    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:4,vb:155.96,desc_:0.0,fl:155.96},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:113,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:501,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:251,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:467,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:1641,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:48,vb:242.0,desc_:1.0,fl:241.0},
+    {id:"100400",desc:"Mel & Maracujá",cat:"Topping Extra",qty:1,vb:39.99,desc_:0.0,fl:39.99},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:38,vb:116.0,desc_:2.25,fl:113.75},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:238,vb:1214.0,desc_:13.99,fl:1200.01},
+    {id:"100014",desc:"Nest.Oak (500ml)",cat:"Bebida",qty:2,vb:67.98,desc_:0.0,fl:67.98},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:11,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:12,vb:414.88,desc_:13.5,fl:406.38},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:17,vb:579.84,desc_:16.79,fl:573.04},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:12,vb:143.88,desc_:1.2,fl:142.68},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:12,vb:345.88,desc_:0.0,fl:345.88},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:12,vb:167.88,desc_:1.39,fl:166.49},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:25,vb:350.78,desc_:17.07,fl:348.68},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:13,vb:181.87,desc_:3.5,fl:178.37},
+    {id:"100422",desc:"Oakberry Açaí Consumo Imediato (850ml).",cat:"Topping Extra",qty:6,vb:309.94,desc_:20.0,fl:309.94},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:620,vb:13666.82,desc_:412.43,fl:13441.37},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:3,vb:15.0,desc_:0.0,fl:15.0},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:20,vb:100.0,desc_:6.25,fl:93.75},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:119,vb:365.0,desc_:3.03,fl:361.97},
+    {id:"100417",desc:"Pasta de Amendoim (Pote 450g).",cat:"Topping Grátis",qty:1,vb:35.99,desc_:0.0,fl:35.99},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:34,vb:139.0,desc_:0.4,fl:138.6},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:56,vb:230.0,desc_:2.0,fl:228.0},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:41,vb:167.0,desc_:2.01,fl:164.99},
+    {id:"100018",desc:"Pb Lovers (500ml)",cat:"Bebida",qty:3,vb:107.97,desc_:0.0,fl:107.97},
+    {id:"100016",desc:"Power Punch (500ml)",cat:"Bebida",qty:2,vb:91.98,desc_:0.0,fl:91.98},
+    {id:"100024",desc:"Protein Booster: Açaí (270ml)",cat:"Bebida",qty:3,vb:35.97,desc_:0.0,fl:35.97},
+    {id:"100023",desc:"Protein Booster: Açaí com Guaraná (270ml)",cat:"Bebida",qty:6,vb:71.94,desc_:0.0,fl:71.94},
+    {id:"100384",desc:"Smoothie Avelã",cat:"Smoothie",qty:9,vb:290.41,desc_:9.5,fl:290.41},
+    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:2,vb:76.98,desc_:5.0,fl:76.98},
+    {id:"100100",desc:"Super Glow Smoothies  350(ml)",cat:"Smoothie",qty:4,vb:127.96,desc_:0.0,fl:127.96},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:53,vb:2319.47,desc_:87.35,fl:2305.12},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:17,vb:593.83,desc_:0.0,fl:593.83},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:3,vb:95.97,desc_:0.0,fl:95.97},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:59,vb:534.0,desc_:2.7,fl:531.3},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:94,vb:1138.0,desc_:4.8,fl:1133.2},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:315,vb:10912.99,desc_:348.72,fl:10785.49},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:106,vb:2992.53,desc_:99.61,fl:2981.33},
+  ],
+  "2026-01": [
+    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:3,vb:89.97,desc_:0.0,fl:89.97},
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:2,vb:16.0,desc_:0.0,fl:16.0},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:8,vb:62.0,desc_:0.0,fl:62.0},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:55,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:18,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:185,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:1,vb:36.99,desc_:0.0,fl:36.99},
+    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:6,vb:267.94,desc_:0.0,fl:267.94},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:90,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:21,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:21,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:212,vb:5745.57,desc_:1158.33,fl:4781.61},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:16,vb:376.85,desc_:11.89,fl:369.95},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:61,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:9,vb:29.0,desc_:1.2,fl:27.8},
+    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:2,vb:77.98,desc_:0.0,fl:77.98},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:25,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:169,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:64,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:97,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:266,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:11,vb:56.0,desc_:0.76,fl:55.24},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:11,vb:37.0,desc_:1.8,fl:35.2},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:52,vb:275.0,desc_:8.01,fl:266.99},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:16,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:11,vb:373.89,desc_:0.0,fl:373.89},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:10,vb:338.9,desc_:13.4,fl:335.5},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:2,vb:23.98,desc_:0.0,fl:23.98},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:1,vb:27.99,desc_:0.0,fl:27.99},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:4,vb:55.96,desc_:0.0,fl:55.96},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:1,vb:13.99,desc_:0.0,fl:13.99},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:1,vb:13.99,desc_:0.0,fl:13.99},
+    {id:"100009",desc:"Oakberry Açaí Consumo Imediato (850ml)",cat:"Topping Extra",qty:8,vb:458.93,desc_:24.39,fl:449.53},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:178,vb:3835.73,desc_:230.8,fl:3628.42},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:3,vb:15.0,desc_:0.0,fl:15.0},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:23,vb:106.0,desc_:11.13,fl:94.87},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:28,vb:96.0,desc_:3.0,fl:93.0},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:7,vb:28.0,desc_:0.4,fl:27.6},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:17,vb:74.0,desc_:2.4,fl:71.6},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:10,vb:40.0,desc_:1.61,fl:38.39},
+    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:3,vb:107.97,desc_:0.0,fl:107.97},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:22,vb:939.6,desc_:78.48,fl:927.3},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:1,vb:36.99,desc_:5.0,fl:36.99},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:9,vb:87.0,desc_:0.0,fl:87.0},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:10,vb:130.0,desc_:1.2,fl:128.8},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:68,vb:2344.24,desc_:190.24,fl:2282.34},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:10,vb:295.91,desc_:22.79,fl:293.11},
+  ],
+  "2026-02": [
+    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:1,vb:29.99,desc_:0.0,fl:29.99},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:8,vb:64.0,desc_:4.0,fl:60.0},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:39,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:32,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:140,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:1,vb:36.99,desc_:0.0,fl:36.99},
+    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:1,vb:39.99,desc_:0.0,fl:39.99},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:68,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:25,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:23,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:181,vb:4981.71,desc_:1008.1,fl:4075.09},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:12,vb:276.89,desc_:4.99,fl:276.89},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:34,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:4,vb:14.0,desc_:0.3,fl:13.7},
+    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:1,vb:38.99,desc_:0.0,fl:38.99},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:15,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:111,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:68,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:89,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:222,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:8,vb:42.0,desc_:0.5,fl:41.5},
+    {id:"100400",desc:"Mel & Maracujá",cat:"Topping Extra",qty:2,vb:79.98,desc_:0.0,fl:79.98},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:7,vb:25.0,desc_:0.75,fl:24.25},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:31,vb:155.0,desc_:9.0,fl:146.0},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:4,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:3,vb:101.97,desc_:5.1,fl:96.87},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:6,vb:203.94,desc_:0.0,fl:203.94},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:1,vb:11.99,desc_:0.0,fl:11.99},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:2,vb:55.98,desc_:0.0,fl:55.98},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:1,vb:13.99,desc_:0.0,fl:13.99},
+    {id:"100422",desc:"Oakberry Açaí Consumo Imediato (850ml).",cat:"Topping Extra",qty:1,vb:48.99,desc_:0.0,fl:48.99},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:114,vb:2531.89,desc_:149.35,fl:2417.51},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:11,vb:55.0,desc_:2.0,fl:53.0},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:37,vb:117.0,desc_:5.57,fl:111.43},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:9,vb:40.0,desc_:0.0,fl:40.0},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:16,vb:75.0,desc_:0.6,fl:74.4},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:10,vb:44.0,desc_:0.0,fl:44.0},
+    {id:"100016",desc:"Power Punch (500ml)",cat:"Bebida",qty:1,vb:46.99,desc_:5.0,fl:46.99},
+    {id:"100384",desc:"Smoothie Avelã",cat:"Smoothie",qty:3,vb:95.97,desc_:0.0,fl:95.97},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:17,vb:756.83,desc_:70.5,fl:736.33},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:1,vb:27.99,desc_:14.0,fl:27.99},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:1,vb:31.99,desc_:0.0,fl:31.99},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:3,vb:30.0,desc_:0.9,fl:29.1},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:8,vb:98.0,desc_:0.0,fl:98.0},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:64,vb:2209.06,desc_:262.13,fl:2006.91},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:8,vb:230.42,desc_:23.5,fl:230.42},
+  ],
+  "2026-03": [
+    {id:"100080",desc:"Açaí Bowl Comfy Chia Pudding (350ml)",cat:"Bowl",qty:13,vb:381.89,desc_:9.98,fl:381.89},
+    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:11,vb:329.89,desc_:0.0,fl:329.89},
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:1,vb:10.99,desc_:0.0,fl:10.99},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:9,vb:72.0,desc_:0.0,fl:72.0},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:124,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:124,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:763,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:5,vb:184.95,desc_:0.0,fl:184.95},
+    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:3,vb:119.97,desc_:0.0,fl:119.97},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:270,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:115,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:98,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:804,vb:21954.09,desc_:1672.44,fl:20611.52},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:170,vb:3922.32,desc_:16.88,fl:3915.42},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:156,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:15,vb:49.0,desc_:0.3,fl:48.7},
+    {id:"100345",desc:"CROCK BANANA",cat:"Crock",qty:5,vb:169.95,desc_:6.8,fl:163.15},
+    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:4,vb:155.96,desc_:0.0,fl:155.96},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:113,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:501,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:251,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:467,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:1641,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:48,vb:242.0,desc_:1.0,fl:241.0},
+    {id:"100400",desc:"Mel & Maracujá",cat:"Topping Extra",qty:1,vb:39.99,desc_:0.0,fl:39.99},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:38,vb:116.0,desc_:2.25,fl:113.75},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:238,vb:1214.0,desc_:13.99,fl:1200.01},
+    {id:"100014",desc:"Nest.Oak (500ml)",cat:"Bebida",qty:2,vb:67.98,desc_:0.0,fl:67.98},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:11,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:12,vb:414.88,desc_:13.5,fl:406.38},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:17,vb:579.84,desc_:16.79,fl:573.04},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:12,vb:143.88,desc_:1.2,fl:142.68},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:12,vb:345.88,desc_:0.0,fl:345.88},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:12,vb:167.88,desc_:1.39,fl:166.49},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:25,vb:350.78,desc_:17.07,fl:348.68},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:13,vb:181.87,desc_:3.5,fl:178.37},
+    {id:"100422",desc:"Oakberry Açaí Consumo Imediato (850ml).",cat:"Topping Extra",qty:6,vb:309.94,desc_:20.0,fl:309.94},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:620,vb:13666.82,desc_:412.43,fl:13441.37},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:3,vb:15.0,desc_:0.0,fl:15.0},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:20,vb:100.0,desc_:6.25,fl:93.75},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:119,vb:365.0,desc_:3.03,fl:361.97},
+    {id:"100417",desc:"Pasta de Amendoim (Pote 450g).",cat:"Topping Grátis",qty:1,vb:35.99,desc_:0.0,fl:35.99},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:34,vb:139.0,desc_:0.4,fl:138.6},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:56,vb:230.0,desc_:2.0,fl:228.0},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:41,vb:167.0,desc_:2.01,fl:164.99},
+    {id:"100018",desc:"Pb Lovers (500ml)",cat:"Bebida",qty:3,vb:107.97,desc_:0.0,fl:107.97},
+    {id:"100016",desc:"Power Punch (500ml)",cat:"Bebida",qty:2,vb:91.98,desc_:0.0,fl:91.98},
+    {id:"100024",desc:"Protein Booster: Açaí (270ml)",cat:"Bebida",qty:3,vb:35.97,desc_:0.0,fl:35.97},
+    {id:"100023",desc:"Protein Booster: Açaí com Guaraná (270ml)",cat:"Bebida",qty:6,vb:71.94,desc_:0.0,fl:71.94},
+    {id:"100384",desc:"Smoothie Avelã",cat:"Smoothie",qty:9,vb:290.41,desc_:9.5,fl:290.41},
+    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:2,vb:76.98,desc_:5.0,fl:76.98},
+    {id:"100100",desc:"Super Glow Smoothies  350(ml)",cat:"Smoothie",qty:4,vb:127.96,desc_:0.0,fl:127.96},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:53,vb:2319.47,desc_:87.35,fl:2305.12},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:17,vb:593.83,desc_:0.0,fl:593.83},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:3,vb:95.97,desc_:0.0,fl:95.97},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:59,vb:534.0,desc_:2.7,fl:531.3},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:94,vb:1138.0,desc_:4.8,fl:1133.2},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:315,vb:10912.99,desc_:348.72,fl:10785.49},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:106,vb:2992.53,desc_:99.61,fl:2981.33},
+  ],
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   HELPERS DE CATEGORIZAÇÃO
+   Usado para reprocessar se necessário
+═══════════════════════════════════════════════════════════════════ */
+const CAT_COLORS = {
+  'Bowl':           '#10b981',
+  'Smoothie':       '#06b6d4',
+  'Topping Grátis': '#8b5cf6',
+  'Topping Extra':  '#f59e0b',
+  'Bebida':         '#3b82f6',
+  'Oakbar':         '#ec4899',
+  'Crock':          '#64748b',
+};
+
+const FREE_TOPPING_IDS = [
+  100083,100084,100085,100086,100087,100088,100089,
+  100090,100082,100041,100074,100091,100092
+  // Note: 100076/100077 (Whey Coco) excluded — são pagos, categoria Topping Extra
+];
+
+function catOf(id, desc) {
+  if (FREE_TOPPING_IDS.includes(+id)) return 'Topping Grátis';
+  const d = desc.toLowerCase();
+  if (d.includes('bowl') || d.includes('açaí bowl')) return 'Bowl';
+  if (d.includes('smoothie') || d.includes('smooties')) return 'Smoothie';
+  if (['amendoim','aveia','banana','castanha','chia','coco (','farinha','granola','leite cond','leite ninho','neston'].some(t=>d.includes(t))) return 'Topping Grátis';
+  if (d.includes('oakbar')) return 'Oakbar';
+  if (d.includes('crock')) return 'Crock';
+  if (['água','energy tea','nest.oak','o original','o preferido','power punch','pb lovers','summer vibes','protein booster','super glow','tropical beats','zen matcha','berry fusion','água de coco'].some(t=>d.includes(t))) return 'Bebida';
+  return 'Topping Extra';
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════════════ */
+let periodMode = 'mes';
+let activeTab = 'overview';
+let builtCharts = {};
+
+// Default to last available month on load
+(function setDefaultPeriod() {
+  const months = Object.keys(DATA_MENSAL).sort();
+  if (!months.length) return;
+  const last = months[months.length - 1];
+  const [y, m] = last.split('-');
+  const selAno = document.getElementById('selAno');
+  const selMes = document.getElementById('selMes');
+  if (selAno) selAno.value = y;
+  if (selMes) selMes.value = m;
+})();
+
+/* ═══════════════════════════════════════════════════════════════════
+   FILTER LOGIC
+═══════════════════════════════════════════════════════════════════ */
+function getAvailableMonths() {
+  return Object.keys(DATA_MENSAL).sort();
+}
+
+function getFilteredKeys() {
+  const months = getAvailableMonths();
+  const ano = document.getElementById('selAno').value;
+  const mes = document.getElementById('selMes').value;
+  const tri = document.getElementById('selTri').value;
+
+  return months.filter(k => {
+    const [y, m] = k.split('-');
+    if (ano !== 'todos' && y !== ano) return false;
+    if (periodMode === 'acumulado') return true; // all months in selected year
+    if (periodMode === 'mes' && mes !== 'todos' && m !== mes) return false;
+    if (periodMode === 'trimestre' && tri !== 'todos') {
+      const qMap = {'1':['01','02','03'],'2':['04','05','06'],'3':['07','08','09'],'4':['10','11','12']};
+      if (!qMap[tri].includes(m)) return false;
+    }
+    return true;
+  });
+}
+
+function getAggData(keys) {
+  // Aggregate all products across selected months
+  const agg = {};
+  keys.forEach(k => {
+    (DATA_MENSAL[k] || []).forEach(p => {
+      const pid = p.id + '|' + p.desc;
+      if (!agg[pid]) agg[pid] = { id:p.id, desc:p.desc, cat:p.cat || catOf(p.id, p.desc), qty:0, vb:0, desc_:0, fl:0 };
+      agg[pid].qty  += p.qty  || 0;
+      agg[pid].vb   += p.vb   || 0;
+      agg[pid].desc_ += p.desc_ || 0;
+      agg[pid].fl   += p.fl   || 0;
+    });
+  });
+  return Object.values(agg);
+}
+
+function getMonthlyAgg(keys) {
+  // Per-month totals for chart series
+  return keys.map(k => {
+    const prods = DATA_MENSAL[k] || [];
+    const fat   = prods.reduce((s,p) => s + (p.fl||0), 0);
+    const qty   = prods.reduce((s,p) => s + (p.qty||0), 0);
+    const bowls = prods.filter(p => (p.cat||catOf(p.id,p.desc)) === 'Bowl');
+    const bowlQty = bowls.reduce((s,p)=>s+(p.qty||0),0);
+    const bowlFat = bowls.reduce((s,p)=>s+(p.fl||0),0);
+    const ticket  = bowlQty > 0 ? bowlFat/bowlQty : 0;
+    const bycat   = {};
+    prods.forEach(p => {
+      const c = p.cat||catOf(p.id,p.desc);
+      bycat[c] = (bycat[c]||0) + (p.fl||0);
+    });
+    return { key:k, fat, qty, bowlQty, bowlFat, ticket, bycat };
+  });
+}
+
+// Previous period offset (1 month back, 3 months back, 12 months back)
+function prevKey(k, offset) {
+  const [y, m] = k.split('-').map(Number);
+  const date = new Date(y, m-1-offset, 1);
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FORMAT HELPERS
+═══════════════════════════════════════════════════════════════════ */
+const fmtR = v => 'R$\u202f' + Math.abs(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtK = v => {
+  const a = Math.abs(v), s = v<0?'-':'';
+  if (a>=1000000) return s+'R$\u202f'+(a/1000000).toFixed(1)+'M';
+  if (a>=1000)    return s+'R$\u202f'+(a/1000).toFixed(1)+'k';
+  return s+'R$\u202f'+a.toFixed(0);
+};
+const fmtPct = (curr, prev) => (prev === null || prev === undefined || prev === 0) ? null : ((curr-prev)/prev*100);
+const signPct = v => v===null ? '—' : (v>=0?'+':'')+v.toFixed(1)+'%';
+const pctClass = v => v===null ? 'empty' : v>=0 ? 'pos' : 'neg';
+
+const MONTH_NAMES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const keyLabel = k => { const [y,m]=k.split('-'); return MONTH_NAMES[+m-1]+'/'+y.slice(2); };
+const keyLabelFull = k => { const [y,m]=k.split('-'); return MONTH_NAMES[+m-1]+'/'+y; };
+
+/* ═══════════════════════════════════════════════════════════════════
+   CHART UTILS
+═══════════════════════════════════════════════════════════════════ */
+Chart.defaults.color = '#7d95b5';
+Chart.defaults.font  = {family:"'Syne',sans-serif", size:10, weight:'600'};
+
+const TTip = {
+  backgroundColor:'#141d2e', borderColor:'#1e2d45', borderWidth:1,
+  padding:10, titleColor:'#e2e8f0', bodyColor:'#7d95b5',
+  titleFont:{family:"'Syne',sans-serif", size:11, weight:'700'},
+  bodyFont:{family:"'Syne',sans-serif", size:10}
+};
+const GRID = {color:'#1e2d45'};
+const TICK = {font:{family:"'Syne',sans-serif",size:10,weight:'600'}};
+
+function destroyChart(id) { try { const c = Chart.getChart(id); if(c) c.destroy(); } catch(e) {} }
+function safeChart(id, config) { try { return new Chart(id, config); } catch(e) { console.warn('Chart error', id, e); } }
+
+function emptyChartMsg(id, msg='Sem dados') {
+  destroyChart(id);
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  const w = canvas.offsetWidth || 300;
+  const h = canvas.offsetHeight || 180;
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = '#3d5470';
+  ctx.font = "600 11px 'Syne',sans-serif";
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(msg, w/2, h/2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RENDER — KPI UPDATE
+═══════════════════════════════════════════════════════════════════ */
+function updateKPIs(data, monthlyData) {
+  const hasData = data.length > 0;
+  const fat    = data.reduce((s,p)=>s+(p.fl||0),0);
+  const qty    = data.reduce((s,p)=>s+(p.qty||0),0);
+  const bowls  = data.filter(p=>p.cat==='Bowl');
+  const bQty   = bowls.reduce((s,p)=>s+(p.qty||0),0);
+  const bFat   = bowls.reduce((s,p)=>s+(p.fl||0),0);
+  const ticket = bQty > 0 ? bFat/bQty : 0;
+  const skus   = data.filter(p=>p.fl>0).length;
+  const freeTopps = data.filter(p=>p.cat==='Topping Grátis');
+  const tQty   = freeTopps.reduce((s,p)=>s+(p.qty||0),0);
+  const mix    = bQty > 0 ? tQty/bQty : 0;
+
+  document.getElementById('kpi-fat').textContent    = hasData ? fmtK(fat) : '—';
+  document.getElementById('kpi-fat').className      = 'kpi-val' + (hasData?'':' empty');
+  document.getElementById('kpi-qty').textContent    = hasData ? qty.toLocaleString('pt-BR') : '—';
+  document.getElementById('kpi-qty').className      = 'kpi-val' + (hasData?'':' empty');
+  document.getElementById('kpi-ticket').textContent = hasData && ticket>0 ? fmtR(ticket) : '—';
+  document.getElementById('kpi-ticket').className   = 'kpi-val' + (hasData&&ticket>0?'':' empty');
+  document.getElementById('kpi-skus').textContent   = hasData ? skus : '—';
+  document.getElementById('kpi-skus').className     = 'kpi-val' + (hasData?'':' empty');
+  document.getElementById('kpi-mix').textContent    = hasData && mix>0 ? mix.toFixed(1)+'×' : '—';
+  document.getElementById('kpi-mix').className      = 'kpi-val' + (hasData&&mix>0?'':' empty');
+
+  // Comparisons — only when a single month is selected
+  const keys = getFilteredKeys();
+  if (keys.length === 1) {
+    const currMonth = keys[0];
+
+    // ── MoM: mês atual vs mês anterior (1 mês vs 1 mês) ──
+    const prevMoM = prevKey(currMonth, 1);
+    const momData = DATA_MENSAL[prevMoM] ? getAggData([prevMoM]) : null;
+    const momFat  = momData ? momData.reduce((s,p)=>s+(p.fl||0),0) : null;
+    const momQty  = momData ? momData.reduce((s,p)=>s+(p.qty||0),0) : null;
+
+    // ── QoQ: 3 meses terminando no mês atual vs 3 meses anteriores ──
+    // Trimestre atual: [currMonth-2, currMonth-1, currMonth]
+    const qCurrKeys = [prevKey(currMonth,2), prevKey(currMonth,1), currMonth]
+                        .filter(k => DATA_MENSAL[k]);
+    // Trimestre anterior: [currMonth-5, currMonth-4, currMonth-3]
+    const qPrevKeys = [prevKey(currMonth,5), prevKey(currMonth,4), prevKey(currMonth,3)]
+                        .filter(k => DATA_MENSAL[k]);
+    const qCurrFat = qCurrKeys.length ? getAggData(qCurrKeys).reduce((s,p)=>s+(p.fl||0),0) : null;
+    const qPrevFat = qPrevKeys.length ? getAggData(qPrevKeys).reduce((s,p)=>s+(p.fl||0),0) : null;
+    // Labels: e.g. "Jan–Mar/26" vs "Out–Dez/25"
+    const qCurrLabel = qCurrKeys.length > 1
+      ? keyLabel(qCurrKeys[0]) + '→' + keyLabel(qCurrKeys[qCurrKeys.length-1])
+      : qCurrKeys.length ? keyLabel(qCurrKeys[0]) : '—';
+    const qPrevLabel = qPrevKeys.length > 1
+      ? keyLabel(qPrevKeys[0]) + '→' + keyLabel(qPrevKeys[qPrevKeys.length-1])
+      : qPrevKeys.length ? keyLabel(qPrevKeys[0]) : '(sem dados)';
+
+    // ── YoY: mesmo trimestre do ano anterior (3 meses vs 3 meses) ──
+    const yCurrKeys = [prevKey(currMonth,2), prevKey(currMonth,1), currMonth]
+                        .filter(k => DATA_MENSAL[k]);
+    const yPrevKeys = [prevKey(currMonth,14), prevKey(currMonth,13), prevKey(currMonth,12)]
+                        .filter(k => DATA_MENSAL[k]);
+    const yCurrFat = yCurrKeys.length ? getAggData(yCurrKeys).reduce((s,p)=>s+(p.fl||0),0) : null;
+    const yPrevFat = yPrevKeys.length ? getAggData(yPrevKeys).reduce((s,p)=>s+(p.fl||0),0) : null;
+    const yCurrLabel = yCurrKeys.length > 1
+      ? keyLabel(yCurrKeys[0]) + '→' + keyLabel(yCurrKeys[yCurrKeys.length-1])
+      : yCurrKeys.length ? keyLabel(yCurrKeys[0]) : '—';
+    const yPrevLabel = yPrevKeys.length > 1
+      ? keyLabel(yPrevKeys[0]) + '→' + keyLabel(yPrevKeys[yPrevKeys.length-1])
+      : yPrevKeys.length ? keyLabel(yPrevKeys[0]) : '(sem dados)';
+
+    renderCmpCard('mom', prevMoM,   momFat,   currMonth,   fat,      null,       null      );
+    renderCmpCard('qoq', null,      qPrevFat, null,        qCurrFat, qPrevLabel, qCurrLabel);
+    renderCmpCard('yoy', null,      yPrevFat, null,        yCurrFat, yPrevLabel, yCurrLabel);
+
+    // KPI deltas
+    setDelta('kpi-fat-mom', fmtPct(fat, momFat), 'vs mês ant.');
+    setDelta('kpi-qty-mom', fmtPct(qty, momQty), 'vs mês ant.');
+  } else {
+    // multi-period: clear comparisons
+    ['mom','qoq','yoy'].forEach(t => {
+      ['prev-val','curr-val'].forEach(s => {
+        const el = document.getElementById(`${t}-${s}`);
+        if (el) { el.textContent = '—'; el.className = 'cmp-pval empty'; }
+      });
+      const pc = document.getElementById(`${t}-pct`);
+      if (pc) { pc.textContent = '—'; pc.className = 'cmp-pct empty'; }
+      const pl = document.getElementById(`${t}-prev-label`);
+      const cl = document.getElementById(`${t}-curr-label`);
+      if (pl) pl.textContent = '—';
+      if (cl) cl.textContent = '—';
+    });
+    setDelta('kpi-fat-mom', null, '');
+    setDelta('kpi-qty-mom', null, '');
+  }
+
+  // Sub-KPIs
+  document.getElementById('nav-skus-txt').textContent = skus + ' SKUs com dados';
+  const allKeys = getFilteredKeys();
+  document.getElementById('nav-period-txt').textContent =
+    allKeys.length > 0 ? keyLabel(allKeys[0]) + (allKeys.length>1?' → '+keyLabel(allKeys[allKeys.length-1]):'') : 'Nenhum período';
+  document.getElementById('subtitle-period').textContent =
+    allKeys.length > 0 ? keyLabelFull(allKeys[0]) + (allKeys.length>1?' → '+keyLabelFull(allKeys[allKeys.length-1]):'') : 'Nenhum período carregado';
+}
+
+function setDelta(elId, pct, lbl) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  if (pct === null) { el.textContent = 'MoM —'; el.className = 'delta-chip empty'; return; }
+  el.textContent = signPct(pct) + ' MoM';
+  el.className = 'delta-chip ' + pctClass(pct);
+}
+
+function renderCmpCard(type, prevMonthKey, prevFat, currKey, currFat, overridePrevLabel, overrideCurrLabel) {
+  const pEl = document.getElementById(`${type}-prev-label`);
+  const pV  = document.getElementById(`${type}-prev-val`);
+  const cEl = document.getElementById(`${type}-curr-label`);
+  const cV  = document.getElementById(`${type}-curr-val`);
+  const pc  = document.getElementById(`${type}-pct`);
+
+  // Label: use override if provided, else derive from key
+  const prevLabel = overridePrevLabel !== undefined ? overridePrevLabel
+    : (prevMonthKey && DATA_MENSAL[prevMonthKey] ? keyLabel(prevMonthKey) : '(sem dados)');
+  const currLabel = overrideCurrLabel !== undefined ? overrideCurrLabel
+    : (currKey ? keyLabel(currKey) : '—');
+
+  if (pEl) pEl.textContent = prevLabel;
+  if (cEl) cEl.textContent = currLabel;
+  if (pV) { pV.textContent = prevFat !== null ? fmtK(prevFat) : '—'; pV.className = 'cmp-pval' + (prevFat!==null?'':' empty'); }
+  if (cV) { cV.textContent = currFat !== null ? fmtK(currFat) : '—'; cV.className = 'cmp-pval' + (currFat!==null?'':' empty'); }
+
+  const pct = (prevFat !== null && currFat !== null) ? fmtPct(currFat, prevFat) : null;
+  if (pc) {
+    pc.textContent = pct !== null ? signPct(pct) : '—';
+    pc.className = 'cmp-pct ' + pctClass(pct);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RENDER — OVERVIEW CHARTS
+═══════════════════════════════════════════════════════════════════ */
+function renderOverview(data) {
+  const bycat = {};
+  data.forEach(p => {
+    bycat[p.cat] = bycat[p.cat] || {fat:0,qty:0};
+    bycat[p.cat].fat += p.fl||0;
+    bycat[p.cat].qty += p.qty||0;
+  });
+  const cats    = Object.keys(bycat);
+  const catFats = cats.map(c=>+bycat[c].fat.toFixed(2));
+  const catQtys = cats.map(c=>bycat[c].qty);
+  const catCols = cats.map(c=>CAT_COLORS[c]||'#475569');
+
+  if (cats.length === 0) {
+    emptyChartMsg('chartCatFat');
+    emptyChartMsg('chartCatQty');
+  } else {
+    destroyChart('chartCatFat');
+    safeChart('chartCatFat', {type:'doughnut', data:{labels:cats, datasets:[{data:catFats, backgroundColor:catCols.map(c=>c+'cc'), borderColor:catCols, borderWidth:2, hoverOffset:4}]},
+      options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'right',labels:{boxWidth:9,padding:9,font:{size:10,weight:'600'}}}, tooltip:{...TTip,callbacks:{label:c=>`  ${c.label}: ${fmtK(c.raw)} (${(c.raw/catFats.reduce((a,b)=>a+b,0)*100).toFixed(1)}%)`}}}}});
+
+    destroyChart('chartCatQty');
+    safeChart('chartCatQty', {type:'bar', data:{labels:cats, datasets:[{data:catQtys, backgroundColor:catCols.map(c=>c+'44'), borderColor:catCols, borderWidth:1.5, borderRadius:5, borderSkipped:false}]},
+      options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}, tooltip:{...TTip,callbacks:{label:c=>`  ${c.raw.toLocaleString('pt-BR')} unidades`}}},
+        scales:{x:{grid:GRID,ticks:TICK}, y:{grid:GRID,ticks:{...TICK,callback:v=>v>=1000?Math.round(v/1000)+'k':v}}}}});
+  }
+
+  // Top 10 rankings
+  renderRankList('rankFat', [...data].filter(p=>p.fl>0).sort((a,b)=>b.fl-a.fl).slice(0,10), 'fl', fmtK);
+  renderRankList('rankQty', [...data].filter(p=>p.qty>0).sort((a,b)=>b.qty-a.qty).slice(0,10), 'qty', v=>v.toLocaleString('pt-BR')+' un');
+}
+
+function renderRankList(elId, items, field, fmtFn) {
+  const ul = document.getElementById(elId);
+  if (!ul) return;
+  if (!items.length) { ul.innerHTML = '<li class="rank-empty">Sem dados no período selecionado</li>'; return; }
+  const maxVal = items[0][field];
+  ul.innerHTML = items.map((p,i) => `
+    <li class="rank-item">
+      <span class="rn">${i+1}</span>
+      <div class="rb">
+        <span class="rname" title="${p.desc}">${p.desc}</span>
+        <div class="rbar-bg"><div class="rbar-fill" style="width:${(p[field]/maxVal*100).toFixed(1)}%;background:${CAT_COLORS[p.cat]||'#3b82f6'}"></div></div>
+      </div>
+      <span class="rq">${p.qty.toLocaleString('pt-BR')} un</span>
+      <span class="rv">${fmtFn(p[field])}</span>
+    </li>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RENDER — EVOLUÇÃO
+═══════════════════════════════════════════════════════════════════ */
+function renderEvolucao(monthlyData) {
+  const labels = monthlyData.map(d=>keyLabel(d.key));
+  const fats   = monthlyData.map(d=>+d.fat.toFixed(2));
+  const bQtys  = monthlyData.map(d=>d.bowlQty);
+  const tickets= monthlyData.map(d=>+d.ticket.toFixed(2));
+
+  if (!monthlyData.length) {
+    ['chartEvolFat','chartEvolBowls','chartMom','chartCatEvol','chartTicket'].forEach(id=>emptyChartMsg(id));
+    return;
+  }
+
+  // Faturamento total
+  destroyChart('chartEvolFat');
+  safeChart('chartEvolFat', {type:'line', data:{labels, datasets:[{label:'Faturamento Líquido', data:fats, borderColor:'#3b82f6', backgroundColor:'#3b82f610', borderWidth:2, pointRadius:3, pointBackgroundColor:'#3b82f6', tension:.35, fill:true}]},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...TTip,callbacks:{label:c=>`  ${fmtK(c.raw)}`}}},
+      scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:{...TICK,callback:v=>fmtK(v)}}}}});
+
+  // Bowl qty
+  destroyChart('chartEvolBowls');
+  safeChart('chartEvolBowls', {type:'bar', data:{labels, datasets:[{label:'Bowls', data:bQtys, backgroundColor:'#10b98140', borderColor:'#10b981', borderWidth:1.5, borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...TTip,callbacks:{label:c=>`  ${c.raw} unidades`}}},
+      scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:TICK}}}});
+
+  // MoM %
+  const momPcts = fats.map((f,i)=>i===0?null:fmtPct(f,fats[i-1]));
+  destroyChart('chartMom');
+  safeChart('chartMom', {type:'bar', data:{labels, datasets:[{label:'MoM %', data:momPcts, backgroundColor:momPcts.map(v=>v===null?'transparent':v>=0?'#10b98150':'#f43f5e50'), borderColor:momPcts.map(v=>v===null?'transparent':v>=0?'#10b981':'#f43f5e'), borderWidth:1.5, borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...TTip,callbacks:{label:c=>c.raw===null?'  Sem dado anterior':`  ${signPct(c.raw)}`}}},
+      scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:{...TICK,callback:v=>v+'%'}}}}});
+
+  // Category evolution stacked
+  const allCats = [...new Set(monthlyData.flatMap(d=>Object.keys(d.bycat)))];
+  destroyChart('chartCatEvol');
+  safeChart('chartCatEvol', {type:'bar', data:{labels, datasets:allCats.map(c=>({label:c, data:monthlyData.map(d=>(d.bycat[c]||0)), backgroundColor:(CAT_COLORS[c]||'#475569')+'88', borderColor:CAT_COLORS[c]||'#475569', borderWidth:1, borderRadius:2, stack:'cat'}))},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:9,padding:8}},tooltip:{...TTip,callbacks:{label:c=>`  ${c.dataset.label}: ${fmtK(c.raw)}`}}},
+      scales:{x:{grid:GRID,ticks:TICK,stacked:true},y:{grid:GRID,ticks:{...TICK,callback:v=>fmtK(v)},stacked:true}}}});
+
+  // Ticket
+  destroyChart('chartTicket');
+  safeChart('chartTicket', {type:'line', data:{labels, datasets:[{label:'Ticket/Bowl', data:tickets, borderColor:'#f59e0b', backgroundColor:'#f59e0b10', borderWidth:2, pointRadius:3, pointBackgroundColor:'#f59e0b', tension:.35, fill:true}]},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...TTip,callbacks:{label:c=>`  ${fmtR(c.raw)}`}}},
+      scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:{...TICK,callback:v=>'R$'+v.toFixed(0)}}}}});
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RENDER — BOWLS
+═══════════════════════════════════════════════════════════════════ */
+function renderBowls(data, monthlyData) {
+  const bowls     = data.filter(p=>p.cat==='Bowl').sort((a,b)=>b.fl-a.fl);
+  const smoothies = data.filter(p=>p.cat==='Smoothie').sort((a,b)=>b.fl-a.fl);
+  const bFat = bowls.reduce((s,p)=>s+(p.fl||0),0);
+  const sFat = smoothies.reduce((s,p)=>s+(p.fl||0),0);
+  const bQty = bowls.reduce((s,p)=>s+(p.qty||0),0);
+  const sQty = smoothies.reduce((s,p)=>s+(p.qty||0),0);
+
+  const shorten = s => s.replace(/ (350|500|720|270)ml$/i,'').replace(/ \(.*\)$/,'');
+
+  document.getElementById('kpi-fat-bowl').textContent    = bFat>0?fmtK(bFat):'—';
+  document.getElementById('kpi-fat-bowl').className      = 'kpi-val'+(bFat>0?'':' empty');
+  document.getElementById('kpi-fat-smoothie').textContent= sFat>0?fmtK(sFat):'—';
+  document.getElementById('kpi-fat-smoothie').className  = 'kpi-val'+(sFat>0?'':' empty');
+  document.getElementById('kpi-qty-bowl').textContent    = bQty>0?bQty.toLocaleString('pt-BR'):'—';
+  document.getElementById('kpi-qty-bowl').className      = 'kpi-val'+(bQty>0?'':' empty');
+  document.getElementById('kpi-qty-smoothie').textContent= sQty>0?sQty.toLocaleString('pt-BR'):'—';
+  document.getElementById('kpi-qty-smoothie').className  = 'kpi-val'+(sQty>0?'':' empty');
+
+  if (!bowls.length) { emptyChartMsg('chartBowlFat'); } else {
+    destroyChart('chartBowlFat');
+    safeChart('chartBowlFat', {type:'bar', data:{labels:bowls.map(p=>shorten(p.desc)), datasets:[{label:'Faturamento', data:bowls.map(p=>p.fl), backgroundColor:'#10b98140', borderColor:'#10b981', borderWidth:1.5, borderRadius:5}]},
+      options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...TTip,callbacks:{label:c=>`  ${fmtK(c.raw)}`}}},
+        scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:{...TICK,callback:v=>fmtK(v)}}}}});
+  }
+
+  if (!smoothies.length) { emptyChartMsg('chartSmoothieFat'); } else {
+    destroyChart('chartSmoothieFat');
+    safeChart('chartSmoothieFat', {type:'bar', data:{labels:smoothies.map(p=>shorten(p.desc)), datasets:[{label:'Faturamento', data:smoothies.map(p=>p.fl), backgroundColor:'#06b6d440', borderColor:'#06b6d4', borderWidth:1.5, borderRadius:5}]},
+      options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...TTip,callbacks:{label:c=>`  ${fmtK(c.raw)}`}}},
+        scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:{...TICK,callback:v=>fmtK(v)}}}}});
+  }
+
+  // Classic Bowl evolution
+  const classicEvol = monthlyData.map(d=>{
+    const month = DATA_MENSAL[d.key]||[];
+    const classic = month.find(p=>p.id==100002||p.desc.toLowerCase().includes('classic bowl'));
+    return { key:d.key, qty:classic?classic.qty:0, fl:classic?classic.fl:0 };
+  });
+  destroyChart('chartClassicEvol');
+  safeChart('chartClassicEvol', {type:'bar',
+    data:{labels:classicEvol.map(d=>keyLabel(d.key)), datasets:[
+      {label:'Qtd', data:classicEvol.map(d=>d.qty), backgroundColor:'#10b98130', borderColor:'#10b981', borderWidth:1.5, borderRadius:4, yAxisID:'y1'},
+      {label:'Faturamento', data:classicEvol.map(d=>d.fl), type:'line', borderColor:'#f59e0b', borderWidth:2, pointRadius:3, tension:.3, fill:false, yAxisID:'y2'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:9,padding:8}},tooltip:{...TTip,callbacks:{label:c=>c.datasetIndex===0?`  ${c.raw} un`:`  ${fmtK(c.raw)}`}}},
+      scales:{x:{grid:GRID,ticks:TICK}, y1:{position:'left',grid:GRID,ticks:TICK}, y2:{position:'right',grid:{display:false},ticks:{...TICK,callback:v=>fmtK(v)}}}}});
+
+  // Bowl share
+  const totalFatByMonth = monthlyData.map(d=>d.fat);
+  const bowlFatByMonth  = monthlyData.map(d=>d.bycat['Bowl']||0);
+  const bowlShare       = totalFatByMonth.map((t,i)=>t>0?(bowlFatByMonth[i]/t*100).toFixed(1):0);
+  destroyChart('chartBowlShare');
+  safeChart('chartBowlShare', {type:'line',
+    data:{labels:monthlyData.map(d=>keyLabel(d.key)), datasets:[{label:'Bowl % do total', data:bowlShare, borderColor:'#10b981', backgroundColor:'#10b98115', borderWidth:2, pointRadius:3, tension:.35, fill:true}]},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...TTip,callbacks:{label:c=>`  ${c.raw}%`}}},
+      scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,min:0,max:100,ticks:{...TICK,callback:v=>v+'%'}}}}});
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RENDER — TOPPINGS
+═══════════════════════════════════════════════════════════════════ */
+function renderToppings(data, monthlyData) {
+  const freeTopps  = data.filter(p=>p.cat==='Topping Grátis').sort((a,b)=>b.qty-a.qty);
+  const extraTopps = data.filter(p=>p.cat==='Topping Extra' && p.fl>0).sort((a,b)=>b.fl-a.fl);
+  const bowls      = data.filter(p=>p.cat==='Bowl');
+  const bQty       = bowls.reduce((s,p)=>s+(p.qty||0),0);
+  const tTotal     = freeTopps.reduce((s,p)=>s+(p.qty||0),0);
+  const tFat       = extraTopps.reduce((s,p)=>s+(p.fl||0),0);
+  const mix        = bQty>0?(tTotal/bQty).toFixed(1)+'×':'—';
+  const top1       = freeTopps[0];
+
+  document.getElementById('kpi-topp-total').textContent = tTotal>0?tTotal.toLocaleString('pt-BR'):'—';
+  document.getElementById('kpi-topp-total').className = 'kpi-val'+(tTotal>0?'':' empty');
+  document.getElementById('kpi-topp-mix').textContent = mix;
+  document.getElementById('kpi-topp-mix').className   = 'kpi-val'+(bQty>0?'':' empty');
+  document.getElementById('kpi-topp-fat').textContent = tFat>0?fmtK(tFat):'—';
+  document.getElementById('kpi-topp-fat').className   = 'kpi-val'+(tFat>0?'':' empty');
+  document.getElementById('kpi-topp-top').textContent = top1?top1.desc.replace(/\s*\(.*\)/,''):'—';
+  document.getElementById('kpi-topp-top').className   = 'kpi-val'+(top1?'':' empty')+' '+(top1?'':'');
+  document.getElementById('kpi-topp-top-qty').textContent = top1?`${top1.qty.toLocaleString('pt-BR')} porções`:'0 porções';
+  document.getElementById('kpi-topp-top-qty').className   = 'delta-chip '+(top1?'neu':'empty');
+
+  // Bar chart
+  if (!freeTopps.length) { emptyChartMsg('chartToppingRank'); } else {
+    destroyChart('chartToppingRank');
+    safeChart('chartToppingRank', {type:'bar',
+      data:{labels:freeTopps.map(p=>p.desc.replace(/\s*\(.*\)/,'')), datasets:[{data:freeTopps.map(p=>p.qty), backgroundColor:'#8b5cf640', borderColor:'#8b5cf6', borderWidth:1.5, borderRadius:4}]},
+      options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{...TTip,callbacks:{label:c=>`  ${c.raw.toLocaleString('pt-BR')} porções`}}},
+        scales:{x:{grid:GRID,ticks:TICK},y:{grid:{display:false},ticks:TICK}}}});
+  }
+
+  // Heat
+  const maxQ = freeTopps[0]?.qty||1;
+  document.getElementById('heatGrid').innerHTML = freeTopps.length
+    ? freeTopps.slice(0,12).map(t=>`
+      <div class="heat-item">
+        <div class="heat-name" title="${t.desc}">${t.desc.replace(/\s*\(.*\)/,'')}</div>
+        <div class="heat-val" style="color:#8b5cf6">${t.qty.toLocaleString('pt-BR')}</div>
+        <div class="heat-lbl">porções</div>
+        <div class="heat-bar"><div class="heat-bar-f" style="width:${(t.qty/maxQ*100).toFixed(1)}%"></div></div>
+      </div>`).join('')
+    : '<div class="heat-item"><div class="heat-name">Aguardando dados</div><div class="heat-val" style="color:var(--txt3)">—</div><div class="heat-lbl">porções</div><div class="heat-bar"><div class="heat-bar-f" style="width:0%"></div></div></div>';
+
+  // Extras ranking
+  renderRankList('rankExtras', extraTopps.slice(0,10), 'fl', fmtK);
+
+  // Top 5 toppings evolution
+  const top5Ids = freeTopps.slice(0,5).map(p=>p.id);
+  const top5    = freeTopps.slice(0,5);
+  destroyChart('chartToppingEvol');
+  if (monthlyData.length && top5.length) {
+    safeChart('chartToppingEvol', {type:'line',
+      data:{labels:monthlyData.map(d=>keyLabel(d.key)), datasets:top5.map((tp,i)=>{
+        const COLS=['#8b5cf6','#f59e0b','#10b981','#06b6d4','#f43f5e'];
+        return {label:tp.desc.replace(/\s*\(.*\)/,''), data:monthlyData.map(d=>{
+          const m=DATA_MENSAL[d.key]||[];
+          const found=m.find(p=>p.id==tp.id||(p.desc.trim()===tp.desc.trim()));
+          return found?found.qty:0;
+        }), borderColor:COLS[i], backgroundColor:COLS[i]+'20', borderWidth:2, pointRadius:3, tension:.35, fill:false};
+      })},
+      options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:9,padding:8}},tooltip:{...TTip,callbacks:{label:c=>`  ${c.dataset.label}: ${c.raw} porções`}}},
+        scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:TICK}}}});
+  } else {
+    emptyChartMsg('chartToppingEvol');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RENDER — COMPARATIVO
+═══════════════════════════════════════════════════════════════════ */
+function renderComparativo(monthlyData) {
+  const labels = monthlyData.map(d=>keyLabel(d.key));
+  const fats   = monthlyData.map(d=>+d.fat.toFixed(2));
+
+  // MoM growth bars
+  const momPcts = fats.map((f,i)=>i===0?0:+fmtPct(f,fats[i-1]).toFixed(1));
+
+  if (!monthlyData.length) {
+    ['chartCmpFat','chartCmpCatMom','chartCmpCatYoy'].forEach(id=>emptyChartMsg(id));
+    document.getElementById('tblCmp').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--txt3)">Sem dados disponíveis</td></tr>';
+    return;
+  }
+
+  destroyChart('chartCmpFat');
+  safeChart('chartCmpFat', {type:'bar',
+    data:{labels, datasets:[
+      {label:'Faturamento', data:fats, backgroundColor:'#3b82f640', borderColor:'#3b82f6', borderWidth:1.5, borderRadius:5},
+      {label:'MoM %', data:momPcts, type:'line', borderColor:'#f59e0b', borderWidth:2, pointRadius:3, tension:.3, fill:false, yAxisID:'y2'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:9,padding:8}},tooltip:{...TTip,callbacks:{label:c=>c.datasetIndex===0?`  ${fmtK(c.raw)}`:`  MoM: ${c.raw}%`}}},
+      scales:{x:{grid:GRID,ticks:TICK}, y:{grid:GRID,ticks:{...TICK,callback:v=>fmtK(v)}}, y2:{position:'right',grid:{display:false},ticks:{...TICK,callback:v=>v+'%'}}}}});
+
+  // Cat MoM — last month vs prev
+  const allCats = [...new Set(monthlyData.flatMap(d=>Object.keys(d.bycat)))];
+  const lastMo  = monthlyData[monthlyData.length-1];
+  const prevMo  = monthlyData[monthlyData.length-2];
+  const catMom  = allCats.map(c=>prevMo&&prevMo.bycat[c]?+(fmtPct(lastMo.bycat[c]||0,prevMo.bycat[c])).toFixed(1):null);
+  destroyChart('chartCmpCatMom');
+  safeChart('chartCmpCatMom', {type:'bar',
+    data:{labels:allCats, datasets:[{label:'MoM %', data:catMom, backgroundColor:catMom.map(v=>v===null?'#1e2d4555':v>=0?'#10b98155':'#f43f5e55'), borderColor:catMom.map(v=>v===null?'#3d5470':v>=0?'#10b981':'#f43f5e'), borderWidth:1.5, borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...TTip,callbacks:{label:c=>c.raw===null?'  Sem dados':`  ${signPct(c.raw)}`}}},
+      scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:{...TICK,callback:v=>v+'%'}}}}});
+
+  // Cat YoY (stub — show zero if no year-ago data)
+  const catYoy   = allCats.map(c=>{
+    if(!lastMo) return null;
+    const yAgoKey = prevKey(lastMo.key, 12);
+    const yAgoMo  = monthlyData.find(d=>d.key===yAgoKey);
+    if(!yAgoMo) return null;
+    return yAgoMo.bycat[c]?+(fmtPct(lastMo.bycat[c]||0,yAgoMo.bycat[c])).toFixed(1):null;
+  });
+  destroyChart('chartCmpCatYoy');
+  safeChart('chartCmpCatYoy', {type:'bar',
+    data:{labels:allCats, datasets:[{label:'YoY %', data:catYoy, backgroundColor:catYoy.map(v=>v===null?'#1e2d4555':v>=0?'#06b6d455':'#f43f5e55'), borderColor:catYoy.map(v=>v===null?'#3d5470':v>=0?'#06b6d4':'#f43f5e'), borderWidth:1.5, borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{...TTip,callbacks:{label:c=>c.raw===null?'  Sem dados YoY':`  ${signPct(c.raw)}`}}},
+      scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:{...TICK,callback:v=>v+'%'}}}}});
+
+  // Table: top movers
+  if (prevMo) {
+    const prevProds = DATA_MENSAL[prevMo.key]||[];
+    const currProds = DATA_MENSAL[lastMo.key]||[];
+    const movers = currProds.map(cp=>{
+      const pp = prevProds.find(p=>p.id==cp.id||(p.desc===cp.desc));
+      const varFat = pp ? fmtPct(cp.fl,pp.fl) : null;
+      const varQty = pp ? fmtPct(cp.qty,pp.qty) : null;
+      return {...cp, prevFl:pp?pp.fl:null, prevQty:pp?pp.qty:null, varFat, varQty};
+    });
+    movers.sort((a,b)=>Math.abs(b.varFat||0)-Math.abs(a.varFat||0));
+    document.getElementById('tblCmp').innerHTML = movers.slice(0,15).map(p=>`
+      <tr>
+        <td class="name">${p.desc}</td>
+        <td><span class="pill" style="${pillStyle(p.cat)}">${p.cat}</span></td>
+        <td class="r">${fmtK(p.fl)}</td>
+        <td class="r" style="color:var(--txt3)">${p.prevFl!==null?fmtK(p.prevFl):'—'}</td>
+        <td class="r ${p.varFat===null?'':p.varFat>=0?'trend-pos':'trend-neg'}">${p.varFat!==null?signPct(p.varFat):'—'}</td>
+        <td class="r ${p.varQty===null?'':p.varQty>=0?'trend-pos':'trend-neg'}">${p.varQty!==null?signPct(p.varQty):'—'}</td>
+      </tr>`).join('');
+  }
+}
+
+function pillStyle(cat) {
+  const c = CAT_COLORS[cat]||'#475569';
+  return `background:${c}25;color:${c}`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RENDER — TABLE
+═══════════════════════════════════════════════════════════════════ */
+function renderTable() {
+  const keys   = getFilteredKeys();
+  const data   = getAggData(keys);
+  const catF   = document.getElementById('tblCatFilter').value;
+  const sortBy = document.getElementById('tblSortBy').value;
+  const total  = data.reduce((s,p)=>s+(p.fl||0),0);
+
+  // Need prev period for MoM
+  const momMap = {};
+  if (keys.length === 1) {
+    const prev = prevKey(keys[0], 1);
+    (DATA_MENSAL[prev]||[]).forEach(p=>{ momMap[p.id+'|'+p.desc] = p; });
+  }
+  const yoyMap = {};
+  if (keys.length === 1) {
+    const prev = prevKey(keys[0], 12);
+    (DATA_MENSAL[prev]||[]).forEach(p=>{ yoyMap[p.id+'|'+p.desc] = p; });
+  }
+
+  let filtered = catF==='todos' ? data : data.filter(p=>p.cat===catF);
+  filtered = filtered.map(p=>{
+    const pid = p.id+'|'+p.desc;
+    const pm  = momMap[pid];
+    const py  = yoyMap[pid];
+    return {...p,
+      momPct: pm ? fmtPct(p.fl, pm.fl) : null,
+      yoyPct: py ? fmtPct(p.fl, py.fl) : null,
+    };
+  });
+
+  if (sortBy==='fat')  filtered.sort((a,b)=>b.fl-a.fl);
+  if (sortBy==='qty')  filtered.sort((a,b)=>b.qty-a.qty);
+  if (sortBy==='nome') filtered.sort((a,b)=>a.desc.localeCompare(b.desc));
+  if (sortBy==='mom')  filtered.sort((a,b)=>(b.momPct||0)-(a.momPct||0));
+
+  document.getElementById('tblCount').textContent = filtered.length;
+  document.getElementById('tblTodos').innerHTML = filtered.length
+    ? filtered.map((p,i)=>`
+      <tr>
+        <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">${i+1}</td>
+        <td class="name" title="${p.desc}">${p.desc}</td>
+        <td><span class="pill" style="${pillStyle(p.cat)}">${p.cat}</span></td>
+        <td class="r">${p.qty>0?p.qty.toLocaleString('pt-BR'):'—'}</td>
+        <td class="r">${p.vb>0?fmtR(p.vb):'—'}</td>
+        <td class="r" style="color:${p.desc_>0?'var(--red)':'var(--txt3)'}">${p.desc_>0?'-'+fmtR(p.desc_):'—'}</td>
+        <td class="r" style="color:${p.fl>0?'var(--txt)':'var(--txt3)'}">${p.fl>0?fmtR(p.fl):'—'}</td>
+        <td class="r" style="color:var(--txt2)">${p.fl>0&&total>0?(p.fl/total*100).toFixed(1)+'%':'—'}</td>
+        <td class="r ${p.momPct===null?'':p.momPct>=0?'trend-pos':'trend-neg'}">${p.momPct!==null?signPct(p.momPct):'—'}</td>
+        <td class="r ${p.yoyPct===null?'':p.yoyPct>=0?'trend-pos':'trend-neg'}">${p.yoyPct!==null?signPct(p.yoyPct):'—'}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--txt3)">Sem dados disponíveis</td></tr>';
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MAIN RENDER ORCHESTRATOR
+═══════════════════════════════════════════════════════════════════ */
+function render() {
+  const keys       = getFilteredKeys();
+  const data       = getAggData(keys);
+  const monthlyData= getMonthlyAgg(keys);
+  const hasData    = data.length > 0;
+
+  // Toggle banner
+  document.getElementById('noDataBanner').classList.toggle('visible', !hasData);
+
+  // Update sidebar foot
+  const allKeys = getAvailableMonths();
+  document.getElementById('foot-range').textContent =
+    allKeys.length > 0
+      ? keyLabel(allKeys[0]) + ' → ' + keyLabel(allKeys[allKeys.length-1])
+      : 'Aguardando dados';
+
+  // Compare badge
+  document.getElementById('cmp-badge-txt').textContent =
+    hasData ? `${allKeys.length} meses carregados` : 'Aguardando dados';
+
+  // Period UI label
+  document.getElementById('selMesWrap').style.display  = (periodMode==='mes') ? '' : 'none';
+  document.getElementById('selTriWrap').style.display  = (periodMode==='trimestre') ? '' : 'none';
+
+  updateKPIs(data, monthlyData);
+
+  // Render active tab
+  if (activeTab==='overview')    renderOverview(data);
+  if (activeTab==='evolucao')    renderEvolucao(monthlyData);
+  if (activeTab==='bowls')       renderBowls(data, monthlyData);
+  if (activeTab==='toppings')    renderToppings(data, monthlyData);
+  if (activeTab==='comparativo') renderComparativo(monthlyData);
+  if (activeTab==='todos')       renderTable();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CONTROLS
+═══════════════════════════════════════════════════════════════════ */
+function setPeriodMode(mode, btn) {
+  periodMode = mode;
+  document.querySelectorAll('.pt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  try { render(); } catch(e) { console.error('setPeriodMode render error:', e); }
+}
+
+function onFilterChange() { render(); }
+
+function setTab(id) {
+  activeTab = id;
+  document.querySelectorAll('.tab,.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('[data-tab="'+id+'"]').forEach(b=>b.classList.add('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  const panel = document.getElementById('panel-'+id);
+  if (panel) panel.classList.add('active');
+  try { render(); } catch(e) { console.error('setTab render error:', e); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════════════ */
+(function initDefaults() {
+  const months = Object.keys(DATA_MENSAL).sort();
+  if (!months.length) return;
+  const last = months[months.length - 1];
+  const [y, m] = last.split('-');
+  const selAno = document.getElementById('selAno');
+  const selMes = document.getElementById('selMes');
+  if (selAno) selAno.value = y;
+  if (selMes) selMes.value = m;
+})();
+try { render(); } catch(e) { console.error('render() error:', e); }
+</script>
+</body>
+</html>
