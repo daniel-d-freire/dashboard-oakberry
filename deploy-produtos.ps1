@@ -26,4 +26,5 @@ Write-Host "==> Enviando para GitHub..." -ForegroundColor Cyan
 
 Write-Host ""
 Write-Host "==> Publicado com sucesso!" -ForegroundColor Green
-Write-Host "    Vercel atualiza em ~30 segundos." -ForegroundColor White
+Write-Host "    URL: https://dashboard-oakberry.vercel.app" -ForegroundColor White
+Write-Host "    Vercel atualiza em ~30 segundos." -ForegroundColor Gray
