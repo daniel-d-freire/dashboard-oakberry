@@ -412,30 +412,30 @@ tr:hover td{background:#ffffff03}
       <div class="hl-icon">✦</div>
       <div>
         <div class="hl-title">Destaques do Período</div>
-        <div class="hl-sub">Ago/2025 → Mar/2026 · análise automática</div>
+        <div class="hl-sub">Ago/2025 → Abr/2026 · 9 meses · análise automática</div>
       </div>
       <button class="hl-close" onclick="document.getElementById('highlightsBox').style.display='none'" title="Fechar">×</button>
     </div>
     <div class="hl-grid">
       <div class="hl-item">
-        <div class="hl-num">+463%</div>
-        <div class="hl-desc"><strong>Mar/26 explodiu</strong> vs Fev/26 — de R$11k para R$63k. Retorno dos alunos após recesso de verão impulsionou o melhor resultado recente da loja.</div>
+        <div class="hl-num">3,3×</div>
+        <div class="hl-desc"><strong>Sazonalidade é o maior risco</strong> — meses ativos (Set–Nov, Mar–Abr) faturam 3,3× mais que o recesso (Dez–Fev). Planejar caixa para Jan/Fev é crítico.</div>
       </div>
       <div class="hl-item">
-        <div class="hl-num hl-warn">−53%</div>
-        <div class="hl-desc"><strong>Recesso acadêmico</strong> derruba o caixa — Nov→Dez caiu 53% e Jan/Fev continuaram fracos. Sazonalidade do calendário PUC é o principal risco de receita.</div>
+        <div class="hl-num hl-warn">−29%</div>
+        <div class="hl-desc"><strong>QoQ T1/26 vs T4/25</strong> — primeiro trimestre de 2026 (R$90k) ficou 29% abaixo do T4/25 (R$128k), puxado pelo recesso de Dez/Jan/Fev.</div>
       </div>
       <div class="hl-item">
         <div class="hl-num">74%</div>
-        <div class="hl-desc"><strong>Bowls dominam</strong> o faturamento em todos os meses. Classic Bowl 350ml é o SKU #1 absoluto — sozinho responde por ~32% da receita em meses cheios.</div>
+        <div class="hl-desc"><strong>Bowls são a espinha dorsal</strong> — respondem por ~74% do faturamento em todos os 9 meses. Classic Bowl 350ml é o SKU #1 absoluto em volume e receita.</div>
       </div>
       <div class="hl-item">
         <div class="hl-num">Set/25</div>
-        <div class="hl-desc"><strong>Melhor mês do período</strong> — R$70.296 e 2.060 bowls. Crescimento de +138% sobre Ago/25, coincidindo com o início do 2º semestre letivo da PUC.</div>
+        <div class="hl-desc"><strong>Pico absoluto do período</strong> — R$70.296 e 2.060 bowls, o maior mês registrado. Referência de teto para projeções do 2º semestre de 2026.</div>
       </div>
       <div class="hl-item">
-        <div class="hl-num">#1</div>
-        <div class="hl-desc"><strong>Leite Ninho lidera toppings</strong> em todos os meses — até 1.895 porções em Set/25. Banana e Granola com Castanhas completam o pódio de forma consistente.</div>
+        <div class="hl-num">Abr/26</div>
+        <div class="hl-desc"><strong>Normalização saudável</strong> — queda de 25% vs Mar/26, mas Mar foi inflado pelo retorno pós-recesso. Abr/26 (R$47,9k) está acima da média histórica de R$40,6k.</div>
       </div>
     </div>
   </div>
@@ -1407,7 +1407,65 @@ const DATA_MENSAL = {
     {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:315,vb:10912.99,desc_:348.72,fl:10785.49},
     {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:106,vb:2992.53,desc_:99.61,fl:2981.33},
   ],
-};
+  "2026-04": [
+    {id:"100080",desc:"Açaí Bowl Comfy Chia Pudding (350ml)",cat:"Bowl",qty:3,vb:86.98,desc_:4.99,fl:86.98},
+    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:9,vb:269.91,desc_:0.0,fl:269.91},
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:5,vb:40.0,desc_:0.0,fl:40.0},
+    {id:"100313",desc:"Água de coco integral (330 ml)",cat:"Bebida",qty:3,vb:35.97,desc_:0.0,fl:35.97},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:11,vb:88.0,desc_:0.0,fl:88.0},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:129,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:76,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:628,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100013",desc:"Berry Fusion (500ml)",cat:"Bebida",qty:1,vb:33.99,desc_:0.0,fl:33.99},
+    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:3,vb:110.97,desc_:0.0,fl:110.97},
+    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:3,vb:119.97,desc_:0.0,fl:119.97},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:182,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:79,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:67,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:588,vb:16036.95,desc_:1332.47,fl:14899.65},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:130,vb:2993.74,desc_:36.46,fl:2982.24},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:141,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:20,vb:70.0,desc_:0.9,fl:69.1},
+    {id:"100345",desc:"CROCK BANANA",cat:"Crock",qty:3,vb:101.97,desc_:0.0,fl:101.97},
+    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:4,vb:155.96,desc_:0.0,fl:155.96},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:49,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:405,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:207,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:357,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:1234,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:36,vb:180.0,desc_:0.5,fl:179.5},
+    {id:"100400",desc:"Mel & Maracujá",cat:"Topping Extra",qty:2,vb:79.98,desc_:0.0,fl:79.98},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:27,vb:85.0,desc_:2.25,fl:82.75},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:174,vb:892.0,desc_:13.51,fl:878.49},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:10,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:6,vb:204.94,desc_:5.0,fl:204.94},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:24,vb:820.77,desc_:35.19,fl:810.57},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:7,vb:83.93,desc_:0.0,fl:83.93},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:9,vb:231.91,desc_:30.0,fl:231.91},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:5,vb:69.95,desc_:0.0,fl:69.95},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:10,vb:139.9,desc_:1.4,fl:138.5},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:6,vb:83.94,desc_:0.0,fl:83.94},
+    {id:"100422",desc:"Oakberry Açaí Consumo Imediato (850ml).",cat:"Topping Extra",qty:1,vb:48.99,desc_:0.0,fl:48.99},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:486,vb:10702.2,desc_:241.53,fl:10530.61},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:1,vb:5.0,desc_:0.0,fl:5.0},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:30,vb:150.0,desc_:2.76,fl:147.24},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:84,vb:256.0,desc_:2.12,fl:253.88},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:24,vb:97.0,desc_:0.8,fl:96.2},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:31,vb:126.0,desc_:0.0,fl:126.0},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:33,vb:132.0,desc_:0.6,fl:131.4},
+    {id:"100023",desc:"Protein Booster: Açaí com Guaraná (270ml)",cat:"Bebida",qty:12,vb:143.88,desc_:0.0,fl:143.88},
+    {id:"100384",desc:"Smoothie Avelã",cat:"Smoothie",qty:2,vb:63.98,desc_:0.0,fl:63.98},
+    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:2,vb:71.98,desc_:0.0,fl:71.98},
+    {id:"100100",desc:"Super Glow Smoothies  350(ml)",cat:"Smoothie",qty:3,vb:95.97,desc_:0.0,fl:95.97},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:47,vb:2034.28,desc_:83.35,fl:2030.18},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:10,vb:350.91,desc_:4.99,fl:350.91},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:3,vb:95.97,desc_:0.0,fl:95.97},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:56,vb:513.0,desc_:1.8,fl:511.2},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:77,vb:924.0,desc_:2.4,fl:921.6},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:254,vb:8703.53,desc_:230.27,fl:8613.45},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:65,vb:1829.35,desc_:55.6,fl:1823.75},
+  ],
+};;
 
 /* ═══════════════════════════════════════════════════════════════════
    HELPERS DE CATEGORIZAÇÃO
