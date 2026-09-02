@@ -29,6 +29,12 @@ if (-not $STATUS) {
 $TIMESTAMP = Get-Date -Format "yyyy-MM-dd HH:mm"
 & $GIT commit -m "update: $TIMESTAMP"
 & $GIT push origin main
+if ($LASTEXITCODE -ne 0) {
+    Write-Host ""
+    Write-Host "==> ERRO NO PUSH! Commit foi feito, mas nao subiu para o GitHub." -ForegroundColor Red
+    Write-Host "    Rode novamente: .\sobe-mes.ps1  (ou: git push origin main)" -ForegroundColor Yellow
+    exit 1
+}
 
 Write-Host ""
 Write-Host "==> Publicado!" -ForegroundColor Green
