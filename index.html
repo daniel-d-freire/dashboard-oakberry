@@ -412,7 +412,7 @@ tr:hover td{background:#ffffff03}
       <div class="hl-icon">✦</div>
       <div>
         <div class="hl-title">Destaques do Período</div>
-        <div class="hl-sub">Ago/2025 → Jul/2026 · 12 meses · análise automática</div>
+        <div class="hl-sub">Ago/2025 → Ago/2026 · 13 meses · análise automática</div>
       </div>
       <button class="hl-close" onclick="document.getElementById('highlightsBox').style.display='none'" title="Fechar">×</button>
     </div>
@@ -422,8 +422,8 @@ tr:hover td{background:#ffffff03}
         <div class="hl-desc"><strong>Dois recessos por ano confirmados</strong> — verão (Dez–Fev, média R$17k) e inverno (Jun–Jul, média R$25k). Meses ativos rendem R$56k. Caixa precisa cobrir ~5 meses fracos/ano.</div>
       </div>
       <div class="hl-item">
-        <div class="hl-num">+50%</div>
-        <div class="hl-desc"><strong>QoQ T2/26 vs T1/26</strong> — segundo trimestre (R$135k) recuperou 50% sobre o T1/26 (R$90k), puxado por Abr e Mai fortes antes da queda de Jun.</div>
+        <div class="hl-num">+42%</div>
+        <div class="hl-desc"><strong>Primeiro YoY da série</strong> — Ago/26 (R$41,8k) cresceu 42% sobre Ago/25 (R$29,5k). Primeira comparação ano contra ano disponível, e o sinal é de crescimento estrutural além da sazonalidade.</div>
       </div>
       <div class="hl-item">
         <div class="hl-num">74%</div>
@@ -434,8 +434,8 @@ tr:hover td{background:#ffffff03}
         <div class="hl-desc"><strong>Pico absoluto do período</strong> — R$70.296 e 2.060 bowls, o maior mês registrado. Referência de teto para projeções do 2º semestre de 2026.</div>
       </div>
       <div class="hl-item">
-        <div class="hl-num hl-warn">−57%</div>
-        <div class="hl-desc"><strong>Jul/26 é o fundo do ciclo</strong> — R$15,1k, 2º pior mês da série. Recesso de inverno confirmado. Ago deve iniciar recuperação: em 2025 o mesmo ponto marcou a virada para o pico de Set.</div>
+        <div class="hl-num">+176%</div>
+        <div class="hl-desc"><strong>Virada confirmada</strong> — Ago/26 saltou 176% sobre Jul (R$15,1k → R$41,8k), repetindo o padrão de 2025. Se a curva se mantiver, Set/26 tem potencial de bater o recorde de R$70k.</div>
       </div>
     </div>
   </div>
@@ -1633,7 +1633,68 @@ const DATA_MENSAL = {
     {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:58,vb:2017.91,desc_:55.72,fl:2011.11},
     {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:10,vb:282.9,desc_:21.0,fl:282.9},
   ],
-};;;;;
+  "2026-08": [
+    {id:"100080",desc:"Açaí Bowl Comfy Chia Pudding (350ml)",cat:"Bowl",qty:3,vb:86.97,desc_:0.0,fl:86.97},
+    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:18,vb:539.82,desc_:0.0,fl:539.82},
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:6,vb:48.0,desc_:0.0,fl:48.0},
+    {id:"100313",desc:"Água de coco integral (330 ml)",cat:"Bebida",qty:9,vb:107.91,desc_:0.0,fl:107.91},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:8,vb:64.0,desc_:1.6,fl:62.4},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:108,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:78,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:535,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100013",desc:"Berry Fusion (500ml)",cat:"Bebida",qty:1,vb:33.99,desc_:0.0,fl:33.99},
+    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:4,vb:147.96,desc_:0.0,fl:147.96},
+    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:3,vb:119.97,desc_:0.0,fl:119.97},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:183,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:68,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:109,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:509,vb:14094.93,desc_:1398.34,fl:12696.59},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:85,vb:1982.4,desc_:26.48,fl:1955.92},
+    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:133,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:8,vb:24.0,desc_:0.0,fl:24.0},
+    {id:"100345",desc:"CROCK BANANA",cat:"Crock",qty:3,vb:101.97,desc_:0.0,fl:101.97},
+    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:2,vb:77.98,desc_:0.0,fl:77.98},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:43,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100431",desc:"Founder's Bowl",cat:"Bowl",qty:4,vb:180.96,desc_:5.0,fl:175.96},
+    {id:"100419",desc:"Granola Banana e cacau (800g).",cat:"Topping Grátis",qty:1,vb:44.99,desc_:0.0,fl:44.99},
+    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:319,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:205,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:305,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:1074,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:41,vb:212.0,desc_:0.0,fl:212.0},
+    {id:"100400",desc:"Mel & Maracujá",cat:"Topping Extra",qty:4,vb:159.96,desc_:0.0,fl:159.96},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:34,vb:110.0,desc_:1.8,fl:108.2},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:157,vb:818.0,desc_:7.75,fl:810.25},
+    {id:"100014",desc:"Nest.Oak (500ml)",cat:"Bebida",qty:1,vb:33.99,desc_:3.4,fl:30.59},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:26,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:15,vb:509.85,desc_:3.4,fl:506.45},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:33,vb:1157.67,desc_:68.4,fl:1089.27},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:4,vb:111.96,desc_:0.0,fl:111.96},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:2,vb:31.98,desc_:5.0,fl:26.98},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:8,vb:115.92,desc_:2.8,fl:113.12},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:12,vb:167.88,desc_:11.19,fl:156.69},
+    {id:"100422",desc:"Oakberry Açaí Consumo Imediato (850ml).",cat:"Topping Extra",qty:4,vb:219.96,desc_:4.99,fl:214.97},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:403,vb:8993.97,desc_:273.64,fl:8720.33},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:4,vb:20.0,desc_:0.0,fl:20.0},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:20,vb:100.0,desc_:4.49,fl:95.51},
+    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:86,vb:274.0,desc_:5.24,fl:268.76},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:29,vb:119.0,desc_:0.0,fl:119.0},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:40,vb:157.0,desc_:1.0,fl:156.0},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:37,vb:148.0,desc_:1.39,fl:146.61},
+    {id:"100016",desc:"Power Punch (500ml)",cat:"Bebida",qty:1,vb:45.99,desc_:0.0,fl:45.99},
+    {id:"100024",desc:"Protein Booster: Açaí (270ml)",cat:"Bebida",qty:1,vb:11.99,desc_:0.0,fl:11.99},
+    {id:"100023",desc:"Protein Booster: Açaí com Guaraná (270ml)",cat:"Bebida",qty:1,vb:11.99,desc_:0.0,fl:11.99},
+    {id:"100384",desc:"Smoothie Avelã",cat:"Smoothie",qty:5,vb:159.95,desc_:0.0,fl:159.95},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:29,vb:1386.71,desc_:81.04,fl:1305.67},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:12,vb:423.88,desc_:4.99,fl:418.89},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:2,vb:63.98,desc_:0.0,fl:63.98},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:50,vb:477.0,desc_:7.2,fl:469.8},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:45,vb:526.0,desc_:6.0,fl:520.0},
+    {id:"100076",desc:"Whey protein Coco (14g)",cat:"Topping Grátis",qty:1,vb:9.0,desc_:0.0,fl:9.0},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:234,vb:8279.09,desc_:325.74,fl:7953.35},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:52,vb:1572.28,desc_:45.0,fl:1527.28},
+  ],
+};;;;;;
 
 /* ═══════════════════════════════════════════════════════════════════
    HELPERS DE CATEGORIZAÇÃO
