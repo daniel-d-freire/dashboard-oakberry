@@ -409,33 +409,33 @@ tr:hover td{background:#ffffff03}
   <!-- HIGHLIGHTS BOX -->
   <div class="highlights-box" id="highlightsBox">
     <div class="hl-header">
-      <div class="hl-icon">✦</div>
+      <div class="hl-icon">&#10022;</div>
       <div>
-        <div class="hl-title">Destaques do Período</div>
-        <div class="hl-sub">Ago/2025 → Ago/2026 · 13 meses · análise automática</div>
+        <div class="hl-title">Destaques do Per&iacute;odo</div>
+        <div class="hl-sub">Ago/2025 &rarr; Set/2026 &middot; 14 meses &middot; an&aacute;lise autom&aacute;tica</div>
       </div>
-      <button class="hl-close" onclick="document.getElementById('highlightsBox').style.display='none'" title="Fechar">×</button>
+      <button class="hl-close" onclick="document.getElementById('highlightsBox').style.display='none'" title="Fechar">&times;</button>
     </div>
     <div class="hl-grid">
       <div class="hl-item">
         <div class="hl-num">2 janelas</div>
-        <div class="hl-desc"><strong>Dois recessos por ano confirmados</strong> — verão (Dez–Fev, média R$17k) e inverno (Jun–Jul, média R$25k). Meses ativos rendem R$56k. Caixa precisa cobrir ~5 meses fracos/ano.</div>
+        <div class="hl-desc"><strong>Dois recessos por ano</strong> &mdash; ver&atilde;o (Dez&ndash;Fev, m&eacute;dia R$17k) e inverno (Jun&ndash;Jul, m&eacute;dia R$25k). Meses cheios rendem R$48k&ndash;70k. Agosto &eacute; transi&ccedil;&atilde;o (R$29k em 2025, R$42k em 2026).</div>
       </div>
       <div class="hl-item">
-        <div class="hl-num">+42%</div>
-        <div class="hl-desc"><strong>Primeiro YoY da série</strong> — Ago/26 (R$41,8k) cresceu 42% sobre Ago/25 (R$29,5k). Primeira comparação ano contra ano disponível, e o sinal é de crescimento estrutural além da sazonalidade.</div>
+        <div class="hl-num hl-warn">&minus;7%</div>
+        <div class="hl-desc"><strong>Ago+Set fecham &minus;7% YoY</strong> &mdash; R$92,7k em 2026 vs R$99,8k em 2025. O +42% de Ago/26 isolado superestimava: Set/25 foi o recorde e Set/26 ficou 28% abaixo. Melhor ler YoY por janela de 2 meses.</div>
       </div>
       <div class="hl-item">
-        <div class="hl-num">74%</div>
-        <div class="hl-desc"><strong>Bowls são a espinha dorsal</strong> — respondem por ~74% do faturamento em todos os 9 meses. Classic Bowl 350ml é o SKU #1 absoluto em volume e receita.</div>
+        <div class="hl-num">71&ndash;82%</div>
+        <div class="hl-desc"><strong>Bowls dominam</strong> o faturamento nos 14 meses (76% em Set/26) e ganham peso nos meses fracos. Classic Bowl 350ml &eacute; o SKU #1: 34% do faturamento de Set/26.</div>
       </div>
       <div class="hl-item">
         <div class="hl-num">Set/25</div>
-        <div class="hl-desc"><strong>Pico absoluto do período</strong> — R$70.296 e 2.060 bowls, o maior mês registrado. Referência de teto para projeções do 2º semestre de 2026.</div>
+        <div class="hl-desc"><strong>Recorde segue de p&eacute;</strong> &mdash; R$70.296 e 2.060 bowls. Set/26 chegou a 72% dele (R$50,9k, 1.471 bowls): a virada p&oacute;s-recesso veio, mas n&atilde;o bateu o recorde como a curva de 2025 sugeria.</div>
       </div>
       <div class="hl-item">
-        <div class="hl-num">+176%</div>
-        <div class="hl-desc"><strong>Virada confirmada</strong> — Ago/26 saltou 176% sobre Jul (R$15,1k → R$41,8k), repetindo o padrão de 2025. Se a curva se mantiver, Set/26 tem potencial de bater o recorde de R$70k.</div>
+        <div class="hl-num">+22%</div>
+        <div class="hl-desc"><strong>Set/26 sobe sobre Ago</strong> (R$41,8k &rarr; R$50,9k), 5&ordm; melhor m&ecirc;s da s&eacute;rie. T3/26 fechou em R$107,9k, &minus;20% vs T2/26 (R$135,2k), puxado pelo recesso de Jul.</div>
       </div>
     </div>
   </div>
@@ -1249,164 +1249,6 @@ const DATA_MENSAL = {
     {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:315,vb:10912.99,desc_:348.72,fl:10785.49},
     {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:106,vb:2992.53,desc_:99.61,fl:2981.33},
   ],
-  "2026-01": [
-    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:3,vb:89.97,desc_:0.0,fl:89.97},
-    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:2,vb:16.0,desc_:0.0,fl:16.0},
-    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:8,vb:62.0,desc_:0.0,fl:62.0},
-    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:55,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:18,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:185,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:1,vb:36.99,desc_:0.0,fl:36.99},
-    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:6,vb:267.94,desc_:0.0,fl:267.94},
-    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:90,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:21,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:21,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:212,vb:5745.57,desc_:1158.33,fl:4781.61},
-    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:16,vb:376.85,desc_:11.89,fl:369.95},
-    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:61,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:9,vb:29.0,desc_:1.2,fl:27.8},
-    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:2,vb:77.98,desc_:0.0,fl:77.98},
-    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:25,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:169,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:64,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:97,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:266,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:11,vb:56.0,desc_:0.76,fl:55.24},
-    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:11,vb:37.0,desc_:1.8,fl:35.2},
-    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:52,vb:275.0,desc_:8.01,fl:266.99},
-    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:16,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100010",desc:"O Original",cat:"Bebida",qty:11,vb:373.89,desc_:0.0,fl:373.89},
-    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:10,vb:338.9,desc_:13.4,fl:335.5},
-    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:2,vb:23.98,desc_:0.0,fl:23.98},
-    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:1,vb:27.99,desc_:0.0,fl:27.99},
-    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:4,vb:55.96,desc_:0.0,fl:55.96},
-    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:1,vb:13.99,desc_:0.0,fl:13.99},
-    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:1,vb:13.99,desc_:0.0,fl:13.99},
-    {id:"100009",desc:"Oakberry Açaí Consumo Imediato (850ml)",cat:"Topping Extra",qty:8,vb:458.93,desc_:24.39,fl:449.53},
-    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:178,vb:3835.73,desc_:230.8,fl:3628.42},
-    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:3,vb:15.0,desc_:0.0,fl:15.0},
-    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:23,vb:106.0,desc_:11.13,fl:94.87},
-    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:28,vb:96.0,desc_:3.0,fl:93.0},
-    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:7,vb:28.0,desc_:0.4,fl:27.6},
-    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:17,vb:74.0,desc_:2.4,fl:71.6},
-    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:10,vb:40.0,desc_:1.61,fl:38.39},
-    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:3,vb:107.97,desc_:0.0,fl:107.97},
-    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:22,vb:939.6,desc_:78.48,fl:927.3},
-    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:1,vb:36.99,desc_:5.0,fl:36.99},
-    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:9,vb:87.0,desc_:0.0,fl:87.0},
-    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:10,vb:130.0,desc_:1.2,fl:128.8},
-    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:68,vb:2344.24,desc_:190.24,fl:2282.34},
-    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:10,vb:295.91,desc_:22.79,fl:293.11},
-  ],
-  "2026-02": [
-    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:1,vb:29.99,desc_:0.0,fl:29.99},
-    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:8,vb:64.0,desc_:4.0,fl:60.0},
-    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:39,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:32,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:140,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:1,vb:36.99,desc_:0.0,fl:36.99},
-    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:1,vb:39.99,desc_:0.0,fl:39.99},
-    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:68,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:25,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:23,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:181,vb:4981.71,desc_:1008.1,fl:4075.09},
-    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:12,vb:276.89,desc_:4.99,fl:276.89},
-    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:34,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:4,vb:14.0,desc_:0.3,fl:13.7},
-    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:1,vb:38.99,desc_:0.0,fl:38.99},
-    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:15,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:111,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:68,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:89,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:222,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:8,vb:42.0,desc_:0.5,fl:41.5},
-    {id:"100400",desc:"Mel & Maracujá",cat:"Topping Extra",qty:2,vb:79.98,desc_:0.0,fl:79.98},
-    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:7,vb:25.0,desc_:0.75,fl:24.25},
-    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:31,vb:155.0,desc_:9.0,fl:146.0},
-    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:4,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100010",desc:"O Original",cat:"Bebida",qty:3,vb:101.97,desc_:5.1,fl:96.87},
-    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:6,vb:203.94,desc_:0.0,fl:203.94},
-    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:1,vb:11.99,desc_:0.0,fl:11.99},
-    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:2,vb:55.98,desc_:0.0,fl:55.98},
-    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:1,vb:13.99,desc_:0.0,fl:13.99},
-    {id:"100422",desc:"Oakberry Açaí Consumo Imediato (850ml).",cat:"Topping Extra",qty:1,vb:48.99,desc_:0.0,fl:48.99},
-    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:114,vb:2531.89,desc_:149.35,fl:2417.51},
-    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:11,vb:55.0,desc_:2.0,fl:53.0},
-    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:37,vb:117.0,desc_:5.57,fl:111.43},
-    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:9,vb:40.0,desc_:0.0,fl:40.0},
-    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:16,vb:75.0,desc_:0.6,fl:74.4},
-    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:10,vb:44.0,desc_:0.0,fl:44.0},
-    {id:"100016",desc:"Power Punch (500ml)",cat:"Bebida",qty:1,vb:46.99,desc_:5.0,fl:46.99},
-    {id:"100384",desc:"Smoothie Avelã",cat:"Smoothie",qty:3,vb:95.97,desc_:0.0,fl:95.97},
-    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:17,vb:756.83,desc_:70.5,fl:736.33},
-    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:1,vb:27.99,desc_:14.0,fl:27.99},
-    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:1,vb:31.99,desc_:0.0,fl:31.99},
-    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:3,vb:30.0,desc_:0.9,fl:29.1},
-    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:8,vb:98.0,desc_:0.0,fl:98.0},
-    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:64,vb:2209.06,desc_:262.13,fl:2006.91},
-    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:8,vb:230.42,desc_:23.5,fl:230.42},
-  ],
-  "2026-03": [
-    {id:"100080",desc:"Açaí Bowl Comfy Chia Pudding (350ml)",cat:"Bowl",qty:13,vb:381.89,desc_:9.98,fl:381.89},
-    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:11,vb:329.89,desc_:0.0,fl:329.89},
-    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:1,vb:10.99,desc_:0.0,fl:10.99},
-    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:9,vb:72.0,desc_:0.0,fl:72.0},
-    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:124,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:124,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100085",desc:"Banana (60g)",cat:"Topping Grátis",qty:763,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100381",desc:"Bowl Avelã",cat:"Bowl",qty:5,vb:184.95,desc_:0.0,fl:184.95},
-    {id:"100380",desc:"Bowl Pistache",cat:"Bowl",qty:3,vb:119.97,desc_:0.0,fl:119.97},
-    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:270,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:115,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:98,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:804,vb:21954.09,desc_:1672.44,fl:20611.52},
-    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:170,vb:3922.32,desc_:16.88,fl:3915.42},
-    {id:"100087",desc:"Coco (15g)",cat:"Topping Grátis",qty:156,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100035",desc:"Coco Rock (20g)",cat:"Topping Extra",qty:15,vb:49.0,desc_:0.3,fl:48.7},
-    {id:"100345",desc:"CROCK BANANA",cat:"Crock",qty:5,vb:169.95,desc_:6.8,fl:163.15},
-    {id:"100346",desc:"CROCK MORANGO",cat:"Crock",qty:4,vb:155.96,desc_:0.0,fl:155.96},
-    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:113,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100082",desc:"Granola com Castanhas (32g)",cat:"Topping Grátis",qty:501,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100041",desc:"Granola de banana e cacau (32g)",cat:"Topping Grátis",qty:251,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:467,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100091",desc:"Leite Ninho (6g)",cat:"Topping Grátis",qty:1641,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100036",desc:"Maracujá(30g)",cat:"Topping Extra",qty:48,vb:242.0,desc_:1.0,fl:241.0},
-    {id:"100400",desc:"Mel & Maracujá",cat:"Topping Extra",qty:1,vb:39.99,desc_:0.0,fl:39.99},
-    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:38,vb:116.0,desc_:2.25,fl:113.75},
-    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:238,vb:1214.0,desc_:13.99,fl:1200.01},
-    {id:"100014",desc:"Nest.Oak (500ml)",cat:"Bebida",qty:2,vb:67.98,desc_:0.0,fl:67.98},
-    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:11,vb:0.0,desc_:0.0,fl:0.0},
-    {id:"100010",desc:"O Original",cat:"Bebida",qty:12,vb:414.88,desc_:13.5,fl:406.38},
-    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:17,vb:579.84,desc_:16.79,fl:573.04},
-    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:12,vb:143.88,desc_:1.2,fl:142.68},
-    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:12,vb:345.88,desc_:0.0,fl:345.88},
-    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:12,vb:167.88,desc_:1.39,fl:166.49},
-    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:25,vb:350.78,desc_:17.07,fl:348.68},
-    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:13,vb:181.87,desc_:3.5,fl:178.37},
-    {id:"100422",desc:"Oakberry Açaí Consumo Imediato (850ml).",cat:"Topping Extra",qty:6,vb:309.94,desc_:20.0,fl:309.94},
-    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:620,vb:13666.82,desc_:412.43,fl:13441.37},
-    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:3,vb:15.0,desc_:0.0,fl:15.0},
-    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:20,vb:100.0,desc_:6.25,fl:93.75},
-    {id:"100095",desc:"Paçoca zero açúcar (15g)",cat:"Topping Extra",qty:119,vb:365.0,desc_:3.03,fl:361.97},
-    {id:"100417",desc:"Pasta de Amendoim (Pote 450g).",cat:"Topping Grátis",qty:1,vb:35.99,desc_:0.0,fl:35.99},
-    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:34,vb:139.0,desc_:0.4,fl:138.6},
-    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:56,vb:230.0,desc_:2.0,fl:228.0},
-    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:41,vb:167.0,desc_:2.01,fl:164.99},
-    {id:"100018",desc:"Pb Lovers (500ml)",cat:"Bebida",qty:3,vb:107.97,desc_:0.0,fl:107.97},
-    {id:"100016",desc:"Power Punch (500ml)",cat:"Bebida",qty:2,vb:91.98,desc_:0.0,fl:91.98},
-    {id:"100024",desc:"Protein Booster: Açaí (270ml)",cat:"Bebida",qty:3,vb:35.97,desc_:0.0,fl:35.97},
-    {id:"100023",desc:"Protein Booster: Açaí com Guaraná (270ml)",cat:"Bebida",qty:6,vb:71.94,desc_:0.0,fl:71.94},
-    {id:"100384",desc:"Smoothie Avelã",cat:"Smoothie",qty:9,vb:290.41,desc_:9.5,fl:290.41},
-    {id:"100017",desc:"Summer Vibes (500ml)",cat:"Bebida",qty:2,vb:76.98,desc_:5.0,fl:76.98},
-    {id:"100100",desc:"Super Glow Smoothies  350(ml)",cat:"Smoothie",qty:4,vb:127.96,desc_:0.0,fl:127.96},
-    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:53,vb:2319.47,desc_:87.35,fl:2305.12},
-    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:17,vb:593.83,desc_:0.0,fl:593.83},
-    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:3,vb:95.97,desc_:0.0,fl:95.97},
-    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:59,vb:534.0,desc_:2.7,fl:531.3},
-    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:94,vb:1138.0,desc_:4.8,fl:1133.2},
-    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:315,vb:10912.99,desc_:348.72,fl:10785.49},
-    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:106,vb:2992.53,desc_:99.61,fl:2981.33},
-  ],
   "2026-04": [
     {id:"100080",desc:"Açaí Bowl Comfy Chia Pudding (350ml)",cat:"Bowl",qty:3,vb:86.98,desc_:4.99,fl:86.98},
     {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:9,vb:269.91,desc_:0.0,fl:269.91},
@@ -1694,7 +1536,63 @@ const DATA_MENSAL = {
     {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:234,vb:8279.09,desc_:325.74,fl:7953.35},
     {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:52,vb:1572.28,desc_:45.0,fl:1527.28},
   ],
-};;;;;;
+  "2026-09": [
+    {id:"100080",desc:"Açaí Bowl Comfy Chia Pudding (350ml)",cat:"Bowl",qty:7,vb:202.93,desc_:0.0,fl:202.93},
+    {id:"100079",desc:"Açaí Bowl Fresh Chia Pudding (350ml)",cat:"Bowl",qty:29,vb:874.71,desc_:5.0,fl:869.71},
+    {id:"100020",desc:"Água com gás 500ml",cat:"Bebida",qty:1,vb:8.0,desc_:0.0,fl:8.0},
+    {id:"100019",desc:"Água sem gás 500 ml",cat:"Bebida",qty:15,vb:120.0,desc_:0.8,fl:119.2},
+    {id:"100083",desc:"Amendoim (16g)",cat:"Topping Grátis",qty:140,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100084",desc:"Aveia (21g)",cat:"Topping Grátis",qty:66,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100085",desc:"Banana (40g)",cat:"Topping Grátis",qty:739,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100381",desc:"Bowl Avelã (350ml)",cat:"Bowl",qty:7,vb:258.93,desc_:0.0,fl:258.93},
+    {id:"100380",desc:"Bowl Pistache (350ml)",cat:"Bowl",qty:4,vb:159.96,desc_:0.0,fl:159.96},
+    {id:"100086",desc:"Castanha de caju (16g)",cat:"Topping Grátis",qty:179,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100088",desc:"Chia (10g)",cat:"Topping Grátis",qty:68,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100089",desc:"Chia pudding (20g)",cat:"Topping Grátis",qty:118,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100002",desc:"Classic Bowl 350ml",cat:"Bowl",qty:690,vb:18994.63,desc_:1540.58,fl:17454.05},
+    {id:"100005",desc:"Classic Smoothie 350ml",cat:"Smoothie",qty:100,vb:2353.0,desc_:41.83,fl:2311.17},
+    {id:"100087",desc:"Coco (20g)",cat:"Topping Grátis",qty:127,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100035",desc:"Coco Rock (25g)",cat:"Topping Extra",qty:3,vb:15.0,desc_:0.0,fl:15.0},
+    {id:"100090",desc:"Farinha Láctea (16g)",cat:"Topping Grátis",qty:78,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100431",desc:"Founder's Bowl (350ml)",cat:"Bowl",qty:2,vb:85.98,desc_:0.0,fl:85.98},
+    {id:"100082",desc:"Granola com Castanhas (40g)",cat:"Topping Grátis",qty:417,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100041",desc:"Granola de banana e cacau (40g)",cat:"Topping Grátis",qty:225,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100074",desc:"Leite Condensado (15g)",cat:"Topping Grátis",qty:386,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100091",desc:"Leite Ninho (10g)",cat:"Topping Grátis",qty:1132,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100036",desc:"Maracujá(25g)",cat:"Topping Extra",qty:30,vb:150.0,desc_:1.5,fl:148.5},
+    {id:"100400",desc:"Mel & Maracujá (500ml)",cat:"Topping Extra",qty:6,vb:246.94,desc_:5.0,fl:241.94},
+    {id:"100037",desc:"Mel Orgânico(15g)",cat:"Topping Extra",qty:41,vb:129.0,desc_:0.3,fl:128.7},
+    {id:"100038",desc:"Morango(40g)",cat:"Topping Extra",qty:227,vb:1173.0,desc_:6.52,fl:1166.48},
+    {id:"100092",desc:"Neston (8g)",cat:"Topping Grátis",qty:29,vb:0.0,desc_:0.0,fl:0.0},
+    {id:"100010",desc:"O Original",cat:"Bebida",qty:19,vb:651.81,desc_:11.8,fl:640.01},
+    {id:"100011",desc:"O Preferido (500ml)",cat:"Bebida",qty:41,vb:1516.59,desc_:90.98,fl:1425.61},
+    {id:"100022",desc:"Oak Matcha Energy Tea (269ml)",cat:"Bebida",qty:4,vb:51.96,desc_:5.0,fl:46.96},
+    {id:"100015",desc:"OAK Preferido (500ml) Smoothies",cat:"Smoothie",qty:7,vb:195.93,desc_:0.0,fl:195.93},
+    {id:"100027",desc:"Oakbar - Açaí e Coco",cat:"Oakbar",qty:10,vb:151.9,desc_:15.0,fl:136.9},
+    {id:"100025",desc:"Oakbar Açaí e Banana",cat:"Oakbar",qty:11,vb:161.89,desc_:10.0,fl:151.89},
+    {id:"100026",desc:"Oakbar Açaí e Peanut Butter",cat:"Oakbar",qty:12,vb:175.88,desc_:13.49,fl:162.39},
+    {id:"100422",desc:"Oakberry Açaí Consumo Imediato (850ml).",cat:"Topping Extra",qty:8,vb:451.92,desc_:14.79,fl:437.13},
+    {id:"100001",desc:"One Bowl 270ml",cat:"Bowl",qty:461,vb:10193.43,desc_:221.28,fl:9972.15},
+    {id:"100096",desc:"Paç.Oak (20g)",cat:"Topping Extra",qty:5,vb:25.0,desc_:0.0,fl:25.0},
+    {id:"100032",desc:"PAÇ.OAK UN (20g)",cat:"Topping Extra",qty:16,vb:80.0,desc_:4.02,fl:75.98},
+    {id:"100095",desc:"Paçoca zero açúcar (25g)",cat:"Topping Extra",qty:92,vb:286.0,desc_:3.31,fl:282.69},
+    {id:"100065",desc:"Pasta de amendoim com mel (20g)",cat:"Topping Extra",qty:33,vb:143.0,desc_:0.0,fl:143.0},
+    {id:"100395",desc:"Pasta de Avelã (20g).",cat:"Topping Extra",qty:41,vb:165.0,desc_:0.0,fl:165.0},
+    {id:"100397",desc:"Pasta de Pistache (20g).",cat:"Topping Extra",qty:37,vb:152.0,desc_:0.0,fl:152.0},
+    {id:"100024",desc:"Protein Booster: Açaí (270ml)",cat:"Bebida",qty:2,vb:23.98,desc_:0.0,fl:23.98},
+    {id:"100023",desc:"Protein Booster: Açaí com Guaraná (270ml)",cat:"Bebida",qty:1,vb:11.99,desc_:0.0,fl:11.99},
+    {id:"100384",desc:"Smoothie Avelã (350ml)",cat:"Smoothie",qty:5,vb:159.95,desc_:0.0,fl:159.95},
+    {id:"100100",desc:"Super Glow Smoothies  350(ml)",cat:"Smoothie",qty:3,vb:95.97,desc_:0.0,fl:95.97},
+    {id:"100004",desc:"The Oak Bowl 720 ml",cat:"Bowl",qty:45,vb:2104.55,desc_:97.4,fl:2007.15},
+    {id:"100007",desc:"The Oak Smoothie 720ml",cat:"Smoothie",qty:14,vb:549.86,desc_:34.98,fl:514.88},
+    {id:"100101",desc:"Tropical Beats Smooties 350 ML",cat:"Smoothie",qty:2,vb:63.98,desc_:0.0,fl:63.98},
+    {id:"100066",desc:"Whey protein Baunilha (14g)",cat:"Topping Extra",qty:44,vb:408.0,desc_:1.8,fl:406.2},
+    {id:"100067",desc:"Whey protein Baunilha (28g)",cat:"Topping Extra",qty:51,vb:606.0,desc_:2.4,fl:603.6},
+    {id:"100077",desc:"Whey protein Coco (28g)",cat:"Topping Grátis",qty:3,vb:42.0,desc_:0.0,fl:42.0},
+    {id:"100003",desc:"Works Bowl 500 ml",cat:"Bowl",qty:226,vb:7910.39,desc_:180.44,fl:7729.95},
+    {id:"100006",desc:"Works Smoothie 500 ml",cat:"Smoothie",qty:74,vb:2143.26,desc_:61.15,fl:2082.11},
+  ],
+};
 
 /* ═══════════════════════════════════════════════════════════════════
    HELPERS DE CATEGORIZAÇÃO
@@ -1778,8 +1676,9 @@ function getAggData(keys) {
   const agg = {};
   keys.forEach(k => {
     (DATA_MENSAL[k] || []).forEach(p => {
-      const pid = p.id + '|' + p.desc;
+      const pid = String(p.id);
       if (!agg[pid]) agg[pid] = { id:p.id, desc:p.desc, cat:p.cat || catOf(p.id, p.desc), qty:0, vb:0, desc_:0, fl:0 };
+      agg[pid].desc = p.desc; // mantem a descricao do mes mais recente
       agg[pid].qty  += p.qty  || 0;
       agg[pid].vb   += p.vb   || 0;
       agg[pid].desc_ += p.desc_ || 0;
@@ -1905,40 +1804,24 @@ function updateKPIs(data, monthlyData) {
     const momFat  = momData ? momData.reduce((s,p)=>s+(p.fl||0),0) : null;
     const momQty  = momData ? momData.reduce((s,p)=>s+(p.qty||0),0) : null;
 
-    // ── QoQ: 3 meses terminando no mês atual vs 3 meses anteriores ──
-    // Trimestre atual: [currMonth-2, currMonth-1, currMonth]
-    const qCurrKeys = [prevKey(currMonth,2), prevKey(currMonth,1), currMonth]
-                        .filter(k => DATA_MENSAL[k]);
-    // Trimestre anterior: [currMonth-5, currMonth-4, currMonth-3]
-    const qPrevKeys = [prevKey(currMonth,5), prevKey(currMonth,4), prevKey(currMonth,3)]
-                        .filter(k => DATA_MENSAL[k]);
-    const qCurrFat = qCurrKeys.length ? getAggData(qCurrKeys).reduce((s,p)=>s+(p.fl||0),0) : null;
-    const qPrevFat = qPrevKeys.length ? getAggData(qPrevKeys).reduce((s,p)=>s+(p.fl||0),0) : null;
-    // Labels: e.g. "Jan–Mar/26" vs "Out–Dez/25"
-    const qCurrLabel = qCurrKeys.length > 1
-      ? keyLabel(qCurrKeys[0]) + '→' + keyLabel(qCurrKeys[qCurrKeys.length-1])
-      : qCurrKeys.length ? keyLabel(qCurrKeys[0]) : '—';
-    const qPrevLabel = qPrevKeys.length > 1
-      ? keyLabel(qPrevKeys[0]) + '→' + keyLabel(qPrevKeys[qPrevKeys.length-1])
-      : qPrevKeys.length ? keyLabel(qPrevKeys[0]) : '(sem dados)';
+    // ── QoQ / YoY: 3 meses terminando no mes atual, alinhados (so meses com par nos dois periodos) ──
+    const alignWin = (shift) => {
+      const cur = [], prv = [];
+      [2, 1, 0].forEach(o => {
+        const kc = prevKey(currMonth, o), kp = prevKey(currMonth, o + shift);
+        if (DATA_MENSAL[kc] && DATA_MENSAL[kp]) { cur.push(kc); prv.push(kp); }
+      });
+      const lbl = ks => !ks.length ? null
+        : (ks.length === 1 ? keyLabel(ks[0]) : keyLabel(ks[0]) + '→' + keyLabel(ks[ks.length - 1]))
+          + (ks.length < 3 ? ' (' + ks.length + 'm)' : '');
+      const sum = ks => ks.length ? getAggData(ks).reduce((s, p) => s + (p.fl || 0), 0) : null;
+      return { curFat: sum(cur), prvFat: sum(prv), curLabel: lbl(cur) || '—', prvLabel: lbl(prv) || '(sem dados)' };
+    };
+    const Q = alignWin(3), Y = alignWin(12);
 
-    // ── YoY: mesmo trimestre do ano anterior (3 meses vs 3 meses) ──
-    const yCurrKeys = [prevKey(currMonth,2), prevKey(currMonth,1), currMonth]
-                        .filter(k => DATA_MENSAL[k]);
-    const yPrevKeys = [prevKey(currMonth,14), prevKey(currMonth,13), prevKey(currMonth,12)]
-                        .filter(k => DATA_MENSAL[k]);
-    const yCurrFat = yCurrKeys.length ? getAggData(yCurrKeys).reduce((s,p)=>s+(p.fl||0),0) : null;
-    const yPrevFat = yPrevKeys.length ? getAggData(yPrevKeys).reduce((s,p)=>s+(p.fl||0),0) : null;
-    const yCurrLabel = yCurrKeys.length > 1
-      ? keyLabel(yCurrKeys[0]) + '→' + keyLabel(yCurrKeys[yCurrKeys.length-1])
-      : yCurrKeys.length ? keyLabel(yCurrKeys[0]) : '—';
-    const yPrevLabel = yPrevKeys.length > 1
-      ? keyLabel(yPrevKeys[0]) + '→' + keyLabel(yPrevKeys[yPrevKeys.length-1])
-      : yPrevKeys.length ? keyLabel(yPrevKeys[0]) : '(sem dados)';
-
-    renderCmpCard('mom', prevMoM,   momFat,   currMonth,   fat,      null,       null      );
-    renderCmpCard('qoq', null,      qPrevFat, null,        qCurrFat, qPrevLabel, qCurrLabel);
-    renderCmpCard('yoy', null,      yPrevFat, null,        yCurrFat, yPrevLabel, yCurrLabel);
+    renderCmpCard('mom', prevMoM, momFat, currMonth, fat);
+    renderCmpCard('qoq', null, Q.prvFat, null, Q.curFat, Q.prvLabel, Q.curLabel);
+    renderCmpCard('yoy', null, Y.prvFat, null, Y.curFat, Y.prvLabel, Y.curLabel);
 
     // KPI deltas
     setDelta('kpi-fat-mom', fmtPct(fat, momFat), 'vs mês ant.');
@@ -1986,9 +1869,9 @@ function renderCmpCard(type, prevMonthKey, prevFat, currKey, currFat, overridePr
   const pc  = document.getElementById(`${type}-pct`);
 
   // Label: use override if provided, else derive from key
-  const prevLabel = overridePrevLabel !== undefined ? overridePrevLabel
+  const prevLabel = overridePrevLabel != null ? overridePrevLabel
     : (prevMonthKey && DATA_MENSAL[prevMonthKey] ? keyLabel(prevMonthKey) : '(sem dados)');
-  const currLabel = overrideCurrLabel !== undefined ? overrideCurrLabel
+  const currLabel = overrideCurrLabel != null ? overrideCurrLabel
     : (currKey ? keyLabel(currKey) : '—');
 
   if (pEl) pEl.textContent = prevLabel;
@@ -2325,17 +2208,17 @@ function renderTable() {
   const momMap = {};
   if (keys.length === 1) {
     const prev = prevKey(keys[0], 1);
-    (DATA_MENSAL[prev]||[]).forEach(p=>{ momMap[p.id+'|'+p.desc] = p; });
+    (DATA_MENSAL[prev]||[]).forEach(p=>{ momMap[String(p.id)] = p; });
   }
   const yoyMap = {};
   if (keys.length === 1) {
     const prev = prevKey(keys[0], 12);
-    (DATA_MENSAL[prev]||[]).forEach(p=>{ yoyMap[p.id+'|'+p.desc] = p; });
+    (DATA_MENSAL[prev]||[]).forEach(p=>{ yoyMap[String(p.id)] = p; });
   }
 
   let filtered = catF==='todos' ? data : data.filter(p=>p.cat===catF);
   filtered = filtered.map(p=>{
-    const pid = p.id+'|'+p.desc;
+    const pid = String(p.id);
     const pm  = momMap[pid];
     const py  = yoyMap[pid];
     return {...p,
